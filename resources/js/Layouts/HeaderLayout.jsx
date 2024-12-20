@@ -1,0 +1,92 @@
+import { useState } from 'react';
+import { Link } from '@inertiajs/react';
+import NavLink from '@/Components/NavLink';
+
+const HeaderLayout = ({ children, activeLink }) => {
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const [loading, setLoading] = useState(false); 
+
+    const toggleDropdown = () => {
+        setIsDropdownOpen((prev) => !prev);
+    };
+
+    const handleNavLinkClick = () => {
+        setLoading(true); 
+    };
+
+    return (
+        <>
+            <nav className="flex items-center w-full p-4 pl-16 bg-black bg-opacity-50">
+                <img src="/logo-and-icons/logo2.png" alt="Logo" className="h-11" />
+
+                <div className="ml-auto flex items-center space-x-8 pr-16 w-full justify-end">
+                    <NavLink
+                        href="/"
+                        active={activeLink === 'home'}
+                        onClick={handleNavLinkClick}
+                        loading={loading}
+                    >
+                        Home
+                    </NavLink>
+                    <NavLink
+                        href="/about"
+                        active={activeLink === 'about'}
+                        onClick={handleNavLinkClick}
+                        loading={loading}
+                    >
+                        About Us
+                    </NavLink>
+                    <NavLink
+                        href="/services"
+                        active={activeLink === 'services'}
+                        onClick={handleNavLinkClick}
+                        loading={loading}
+                    >
+                        Services
+                    </NavLink>
+                    <NavLink
+                        href="/contact"
+                        active={activeLink === 'contact'}
+                        onClick={handleNavLinkClick}
+                        loading={loading}
+                    >
+                        Contact Us
+                    </NavLink>
+
+                    <div className="relative">
+                        <button
+                            onClick={toggleDropdown}
+                            className="inline-flex items-center p-1 text-white hover:text-[#FFD700] text-xl"
+                        >
+                            <i className="fas fa-user mr-2"></i> {/*Profile icon*/}
+                            <i className="fas fa-chevron-down text-sm"></i>
+                        </button>
+
+                        {isDropdownOpen && (
+                            <div className="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-black bg-opacity-90 ring-1 ring-[#FFD700] ring-opacity-10 ">
+                                <div className="py-1">
+                                    <Link
+                                        href="/login"
+                                        className="block px-4 py-2 text-sm text-white hover:bg-[#F8B008] hover:bg-opacity-90"
+                                    >
+                                        Login
+                                    </Link>
+                                    <Link
+                                        href="/register"
+                                        className="block px-4 py-2 text-sm text-white hover:bg-[#F8B008] hover:bg-opacity-90"
+                                    >
+                                        Register
+                                    </Link>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            </nav>
+
+            <main>{children}</main>
+        </>
+    );
+};
+
+export default HeaderLayout;

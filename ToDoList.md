@@ -28,3 +28,10 @@
     php artisan config:clear
     php artisan route:clear
     php artisan view:clear
+
+
+---
+# December 20, 2024
+
+1. Run in the terminal:
+    npm install --save @fortawesome/fontawesome-free
