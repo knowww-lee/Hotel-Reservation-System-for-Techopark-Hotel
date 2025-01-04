@@ -88,25 +88,25 @@ export default function Login({ status, canResetPassword }) {
                             </InputLabel>
 
                             <div className="relative">
-                <TextInput
-                    id="password"
-                    type={showPassword ? 'text' : 'password'} // Toggle between text and password
-                    name="password"
-                    placeholder="Enter your password"
-                    value={data.password}
-                    className="mt-1 block w-full placeholder-small"
-                    autoComplete="current-password"
-                    onChange={(e) => setData('password', e.target.value)}
-                />
+                                <TextInput
+                                    id="password"
+                                    type={showPassword ? 'text' : 'password'} 
+                                    name="password"
+                                    placeholder="Enter your password"
+                                    value={data.password}
+                                    className="mt-1 block w-full placeholder-small"
+                                    autoComplete="current-password"
+                                    onChange={(e) => setData('password', e.target.value)}
+                                />
 
-                <button
-                    type="button"
-                    className="absolute right-3 top-3 text-gray-600"
-                    onClick={togglePasswordVisibility}
-                >
-                    <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
-                </button>
-            </div>
+                                <button
+                                    type="button"
+                                    className="absolute right-3 top-3 text-gray-600"
+                                    onClick={togglePasswordVisibility}
+                                >
+                                    <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
+                                </button>
+                            </div>
 
                             <InputError message={errors.password} className="mt-2" />
                         </div>
