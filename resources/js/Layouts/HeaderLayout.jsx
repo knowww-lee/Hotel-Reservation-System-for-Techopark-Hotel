@@ -16,7 +16,7 @@ const HeaderLayout = ({ children, activeLink }) => {
 
     return (
         <>
-            <nav className="flex items-center w-full p-4 pl-16 bg-black bg-opacity-50">
+            <nav className="relative z-30 flex items-center w-full p-4 pl-16 bg-black bg-opacity-50">
                 <img src="/logo-and-icons/logo2.png" alt="Logo" className="h-11" />
 
                 <div className="ml-auto flex items-center space-x-8 pr-16 w-full justify-end">
@@ -84,7 +84,7 @@ const HeaderLayout = ({ children, activeLink }) => {
                 </div>
             </nav>
 
-            <main>{children}</main>
+            <main >{children}</main>
         </>
     );
 };

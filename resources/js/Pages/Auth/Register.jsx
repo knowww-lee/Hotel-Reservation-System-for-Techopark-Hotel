@@ -196,7 +196,7 @@ export default function Register() {
                 
                  {/*Image */}
                 <div className="w-1/2 flex justify-center items-center relative">
-                    <img src="/loginresources/image1.png" alt="Login Image" className="w-3/4 h-[90%] object-cover rounded-[30px]" />
+                    <img src="/login-signup-img/image1.png" alt="Login Image" className="w-3/4 h-[90%] object-cover rounded-[30px]" />
                     <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white text-4xl font-extrabold text-right" style={{ textShadow: '2px 2px 4px rgba(0, 0, 0, 0.7)' }}>
                         Come in, feel at home
                     </div>
