@@ -1,3 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.placeholder-small::placeholder {
+    font-size: 0.8rem; 
+}

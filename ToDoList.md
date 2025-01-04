@@ -31,7 +31,18 @@
 
 
 ---
-# December 20, 2024
+# January 4, 2025 (Update)
 
 1. Run in the terminal:
+
+    npm install tailwindcss
+
     npm install --save @fortawesome/fontawesome-free
+
+    npm install --save @fortawesome/fontawesome-svg-core
+
+    npm install --save @fortawesome/free-brands-svg-icons
+    
+    npm install --save @fortawesome/react-fontawesome
+
+    npm install @fortawesome/free-solid-svg-icons
