@@ -22,6 +22,10 @@ Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+Route::get('/room', function () {
+    return Inertia::render('Room');
+})->name('room');
+
 Route::get('/frontdesk', [FrontDeskController::class, 'index'])->name('frontdesk');
 Route::get('/guest', [GuestController::class, 'index'])->name('guest');
 Route::get('/rooms', [RoomsController::class, 'index'])->name('rooms');
