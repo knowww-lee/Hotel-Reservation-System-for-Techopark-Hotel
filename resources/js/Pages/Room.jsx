@@ -75,46 +75,48 @@ export default function Services() {
           <div className="bg-[#EDC76D] p-6 rounded-lg shadow-md">
             <h2 className="text-lg font-bold mb-4">Booking</h2>
             <form className="space-y-4">
-              <div>
+            <div>
                 <label className="block text-sm font-medium mb-1" htmlFor="checkin">
-                  Check In : Date
+                Check In : Date
                 </label>
                 <input
-                  type="date"
-                  id="checkin"
-                  className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                type="date"
+                id="checkin"
+                className="w-full px-3 py-2 border rounded-md bg-green-900 text-white focus:outline-none focus:ring-2 focus:ring-green-500"
                 />
-              </div>
-              <div>
+            </div>
+            <div>
                 <label className="block text-sm font-medium mb-1" htmlFor="checkout">
-                  Check Out : Date
+                Check Out : Date
                 </label>
                 <input
-                  type="date"
-                  id="checkout"
-                  className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                type="date"
+                id="checkout"
+                className="w-full px-3 py-2 border rounded-md bg-green-900 text-white focus:outline-none focus:ring-2 focus:ring-green-500"
                 />
-              </div>
-              <div>
+            </div>
+            <div>
                 <label className="block text-sm font-medium mb-1" htmlFor="adult">
-                  Adult : No.
+                Adult : No.
                 </label>
                 <input
-                  type="number"
-                  id="adult"
-                  className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                type="number"
+                id="adult"
+                className="w-full px-3 py-2 border rounded-md bg-green-900 text-white focus:outline-none focus:ring-2 focus:ring-green-500"
                 />
-              </div>
-              <div>
+            </div>
+            <div>
                 <label className="block text-sm font-medium mb-1" htmlFor="children">
-                  Children : No.
+                Children : No.
                 </label>
                 <input
-                  type="number"
-                  id="children"
-                  className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                type="number"
+                id="children"
+                className="w-full px-3 py-2 border rounded-md bg-green-900 text-white focus:outline-none focus:ring-2 focus:ring-green-500"
                 />
-              </div>
+            </div>
+
+
               <br></br>
               <button
                 type="submit"
