@@ -65,14 +65,14 @@ export default function Services() {
           {/* Room Image */}
           <div className="md:col-span-2">
             <img
-              src="" 
+              src="services-resources/deluxe-room.png" 
               alt="Delux Family Room"
               className="rounded-lg shadow-md"
             />
           </div>
 
           {/* Booking Form */}
-          <div className="bg-[#EDC76D] p-6 rounded-lg shadow-md">
+          <div className="bg-[#EDC76D] p-6 shadow-md">
             <h2 className="text-lg font-bold mb-4">Booking</h2>
             <form className="space-y-4">
             <div>
@@ -82,7 +82,7 @@ export default function Services() {
                 <input
                 type="date"
                 id="checkin"
-                className="w-full px-3 py-2 border rounded-md bg-green-900 text-white focus:outline-none focus:ring-2 focus:ring-green-500"
+                className="w-full px-3 py-2 border rounded-md bg-[#024635] text-white focus:outline-none focus:ring-2 focus:ring-green-500"
                 />
             </div>
             <div>
@@ -92,7 +92,7 @@ export default function Services() {
                 <input
                 type="date"
                 id="checkout"
-                className="w-full px-3 py-2 border rounded-md bg-green-900 text-white focus:outline-none focus:ring-2 focus:ring-green-500"
+                className="w-full px-3 py-2 border rounded-md bg-[#024635] text-white focus:outline-none focus:ring-2 focus:ring-green-500"
                 />
             </div>
             <div>
@@ -102,7 +102,7 @@ export default function Services() {
                 <input
                 type="number"
                 id="adult"
-                className="w-full px-3 py-2 border rounded-md bg-green-900 text-white focus:outline-none focus:ring-2 focus:ring-green-500"
+                className="w-full px-3 py-2 border rounded-md bg-[#024635] text-white focus:outline-none focus:ring-2 focus:ring-green-500"
                 />
             </div>
             <div>
@@ -112,7 +112,7 @@ export default function Services() {
                 <input
                 type="number"
                 id="children"
-                className="w-full px-3 py-2 border rounded-md bg-green-900 text-white focus:outline-none focus:ring-2 focus:ring-green-500"
+                className="w-full px-3 py-2 border rounded-md bg-[#024635] text-white focus:outline-none focus:ring-2 focus:ring-green-500"
                 />
             </div>
 
@@ -141,20 +141,42 @@ export default function Services() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
               <div>
                 <h2 className="text-xl font-bold flex items-center mb-2">
+                  <img src="services-resources/check-in-icon.svg" alt="" />
                   <span className="mr-2"></span> Check In
                 </h2>
                 <ul className="text-gray-700">
+                  <div className="flex">
+                  <img src="services-resources/yellow-check-icon.svg" alt="" />
                   <li>Check-in from 9:00 AM - anytime</li>
+                  </div>
+
+                  <div className="flex">
+                  <img src="services-resources/yellow-check-icon.svg" alt="" />
                   <li>Early check-in subject to availability</li>
+                  </div>
+                  
+                  
                 </ul>
               </div>
               <div>
                 <h2 className="text-xl font-bold flex items-center mb-2">
+                <img src="services-resources/check-out-icon.svg" alt="" />
                   <span className="mr-2"></span> Check Out
                 </h2>
                 <ul className="text-gray-700">
+                <div className="flex">
+                  <img src="services-resources/yellow-check-icon.svg" alt="" />
                   <li>Check-out before noon</li>
+                  </div>
+
+                  <div className="flex">
+                  <img src="services-resources/yellow-check-icon.svg" alt="" />
                   <li>Check-out from 9:00 AM - anytime</li>
+                  </div>
+
+
+                 
+                 
                 </ul>
               </div>
             </div>
@@ -180,11 +202,31 @@ export default function Services() {
           <div>
             <h2 className="text-xl font-bold mb-2">Amenities</h2>
             <ul className="text-gray-700">
-              <li>2 - 5 Persons</li>
-              <li>Free Wifi Available</li>
-              <li>Swimming pools</li>
-              <li>Gym Facilities</li>
-              <li>Breakfast</li>
+            <div className="flex">
+                  <img src="services-resources/amenity-person.svg" alt="" />
+                  <li>2 - 5 Persons</li>
+                  </div>
+              
+              <div className="flex">
+                  <img src="services-resources/amenity-wifi.svg" alt="" />
+                  <li>Free Wifi Available</li>
+                  </div>
+             
+              <div className="flex">
+                  <img src="services-resources/amenity-pool.svg" alt="" />
+                  <li>Swimming pools</li>
+                  </div>
+             
+              <div className="flex">
+                  <img src="services-resources/amenity-gym.svg" alt="" />
+                  <li>Gym Facilities</li>
+                  </div>
+             
+              <div className="flex">
+                  <img src="services-resources/amenity-breakfast.svg" alt="" />
+                  <li>Breakfast</li>
+                  </div>
+              
             </ul>
           </div>
         </div>
