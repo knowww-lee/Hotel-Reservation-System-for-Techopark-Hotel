@@ -1,10 +1,10 @@
-import { Head } from '@inertiajs/react';
-import HeaderLayout from '@/Layouts/HeaderLayout';
-import ServicesBody from "../Layouts/ServicesBody";
-import Footer from "../Layouts/Footer";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBed, faStar, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import SecondaryButton from '@/Components/SecondaryButton';
+import HeaderLayout from '@/Layouts/HeaderLayout';
+import { faBed, faStar } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Head } from '@inertiajs/react';
+import Footer from "../Layouts/Footer";
+import ServicesBody from "../Layouts/ServicesBody";
 
 export default function Services() {
     return (
@@ -195,7 +195,7 @@ export default function Services() {
 
                {/* Form Section */}
 
-               <div>
+               <div id="bottom-section">
                     <div className="flex justify-between border-2 border-grey-500 px-40 py-10 m-40">
                         <div className="w-1/2">
                                 <p className="text-[#F8B008] mb-4 text-lg">CONTACT US</p>

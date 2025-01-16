@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import { Link } from '@inertiajs/react';
 import NavLink from '@/Components/NavLink';
+import { Link } from '@inertiajs/react';
+import { useState } from 'react';
 
 const HeaderLayout = ({ children, activeLink }) => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -45,13 +45,14 @@ const HeaderLayout = ({ children, activeLink }) => {
                         Services
                     </NavLink>
                     <NavLink
-                        href="/contact"
+                        href="/services#bottom-section"
                         active={activeLink === 'contact'}
                         onClick={handleNavLinkClick}
                         loading={loading}
                     >
                         Contact Us
                     </NavLink>
+
 
                     <div className="relative">
                         <button
