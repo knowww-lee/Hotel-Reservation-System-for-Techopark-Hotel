@@ -15,7 +15,7 @@ export default function DashboardHeader() {
 
     return (
 
-        <header class="flex items-center justify-between mb-6">
+        <header class="flex items-center justify-between mb-6 sticky top-0 bg-[#D9D9D9]">
                             
                               <div>
                               <h1 class="text-3xl font-semibold text-gray-800">Welcome</h1>

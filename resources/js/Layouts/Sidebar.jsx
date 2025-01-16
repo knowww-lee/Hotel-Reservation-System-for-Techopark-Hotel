@@ -22,48 +22,113 @@ export default function Sidebar() {
   <nav class="mt-8">
     <ul>
       <li class="mb-4  px-10">
-        <a href="#" class="flex items-center p-4 text-gray-800 bg-[#024635] rounded-2xl">
+            <Link
+              href={route('dashboard')}
+              className={`flex items-center p-4 rounded-2xl ${
+                  route().current('dashboard') ? 'bg-[#024635]' : 'hover:bg-gray-100'
+              }`}
+          >
+              <img
+                src={
+                  route().current('dashboard')
+                      ? '/dashboard-resources/active-dashboard-icon.svg' // Active state image
+                      : '/dashboard-resources/dashboard-icon.svg' // Default image
+              }
+              alt="Dashboard Icon"
+            
+              />
+              <span
+                  className={`ml-3 text-center text-xl font-semibold ${
+                      route().current('dashboard') ? 'text-[#F8B008]' : 'text-[#024635]'
+                  }`}
+              >
+                  Dashboard
+              </span>
+          </Link>
+      </li>
+
+      <li className="mb-4 px-10">
+            <Link
+                href={route('frontdesk')}
+                className={`flex items-center p-4 rounded-2xl ${
+                    route().current('frontdesk') ? 'bg-[#024635]' : 'hover:bg-gray-100'
+                }`}
+            >
+                <img
+                  src={
+                    route().current('frontdesk')
+                        ? '/dashboard-resources/active-frontdesk-icon.svg' // Active state image
+                        : '/dashboard-resources/frontdesk-icon.svg' // Default image
+                }
+                alt="Front Desk Icon"
+              
+                />
+                <span
+                    className={`ml-3 text-center text-xl font-semibold ${
+                        route().current('frontdesk') ? 'text-[#F8B008]' : 'text-[#024635]'
+                    }`}
+                >
+                    Front Desk
+                </span>
+            </Link>
+        </li>
+
+
+      <li class="mb-4  px-10">
+      <Link
+        href={route('guest')}
+        className={`flex items-center p-4 rounded-2xl ${
+            route().current('guest') ? 'bg-[#024635]' : 'hover:bg-gray-100'
+        }`}
+    >
         <img
-                    src="/dashboard-resources/dashboard-icon.svg" 
-                    alt="Dashboard Icon"
-                    className=""
+           src={
+            route().current('guest')
+                ? '/dashboard-resources/active-guest-icon.svg' // Active state image
+                : '/dashboard-resources/guest-icon.svg' // Default image
+        }
+        alt="Guest Icon"
+       
         />
-          <span class="ml-3 text-[#F8B008] text-center text-xl font-semibold">Dashboard</span>
-        </a>
+        <span
+            className={`ml-3 text-center text-xl font-semibold ${
+                route().current('guest') ? 'text-[#F8B008]' : 'text-[#024635]'
+            }`}
+        >
+           Guest
+        </span>
+    </Link>
+       
       </li>
 
       <li class="mb-4  px-10">
-        <a href="#" class="flex items-center p-4 text-gray-600 hover:bg-gray-100 rounded-lg">
+      <Link
+        href={route('rooms')}
+        className={`flex items-center p-4 rounded-2xl ${
+            route().current('rooms') ? 'bg-[#024635]' : 'hover:bg-gray-100'
+        }`}
+    >
         <img
-                    src="/dashboard-resources/frontdesk-icon.svg" 
-                    alt="Front Desk Icon"
-                    className=""
+           src={
+            route().current('rooms')
+                ? '/dashboard-resources/active-rooms-icon.svg' // Active state image
+                : '/dashboard-resources/rooms-icon.svg' // Default image
+        }
+        alt="Rooms Icon"
+       
         />
-          <span class="ml-3 text-[#024635] text-center text-xl font-semibold">Front Desk</span>
-        </a>
+        <span
+            className={`ml-3 text-center text-xl font-semibold ${
+                route().current('rooms') ? 'text-[#F8B008]' : 'text-[#024635]'
+            }`}
+        >
+           Rooms
+        </span>
+    </Link>
+       
       </li>
 
-      <li class="mb-4  px-10">
-        <a href="#" class="flex items-center p-4 text-gray-600 hover:bg-gray-100 rounded-lg">
-        <img
-                    src="/dashboard-resources/guest-icon.svg" 
-                    alt="Guest Icon"
-                    className=""
-        />
-          <span class="ml-3 text-[#024635] text-center text-xl font-semibold">Guest</span>
-        </a>
-      </li>
-
-      <li class="mb-4  px-10">
-        <a href="#" class="flex items-center p-4 text-gray-600 hover:bg-gray-100 rounded-lg">
-        <img
-                    src="/dashboard-resources/rooms-icon.svg" 
-                    alt="Rooms Icon"
-                    className=""
-        />
-          <span class="ml-3 text-[#024635] text-center text-xl font-semibold">Rooms</span>
-        </a>
-      </li>
+     
     
     </ul>
   </nav>
