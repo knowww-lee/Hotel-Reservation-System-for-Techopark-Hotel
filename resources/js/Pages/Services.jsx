@@ -1,5 +1,10 @@
 import { Head } from '@inertiajs/react';
 import HeaderLayout from '@/Layouts/HeaderLayout';
+import ServicesBody from "../Layouts/ServicesBody";
+import Footer from "../Layouts/Footer";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBed, faStar, faArrowRight } from '@fortawesome/free-solid-svg-icons';
+import SecondaryButton from '@/Components/SecondaryButton';
 
 export default function Services() {
     return (
@@ -25,7 +30,223 @@ export default function Services() {
                     </div>
                 </HeaderLayout>
             </div>
-            
+
+            <ServicesBody>
+            <div className="flex justify-center items-center py-8 bg-[#D9D9D9]">
+                <div className="flex flex-col items-center mr-8">
+                    <div className="size-20 bg-[#024635] rounded-full flex items-center justify-center">
+                        <img src="/services-resources/calendar-icon.svg" alt="Calendar Icon" />
+                    </div>
+                    <p className="mt-2 text-center text-sm text-gray-700">Checking-in & <br /> Checking-out Date</p>
+                </div>
+                
+                <div className="flex flex-col items-center mr-8">
+                    <div class="size-20 bg-white border-4 border-[#F8B008] rounded-full flex items-center justify-center">
+                    <img src="/services-resources/bed-icon.svg" alt="Bed Icon" />
+                    </div>
+                    <p className="mt-2 text-center text-sm text-gray-700">Select <br /> Rooms & Rates</p>
+                </div>
+
+                <div className="flex flex-col items-center mr-8">
+                    <div class="size-20 bg-white border-4 border-[#F8B008] rounded-full flex items-center justify-center">
+                    <img src="/services-resources/guest-icon.svg" alt="Guest Icon" />
+                    </div>
+                    <p className="mt-2 text-center text-sm text-gray-700">Guest <br /> Information</p>
+                </div>
+
+                <div className="flex flex-col items-center">
+                    <div className="size-20 bg-white border-4 border-[#F8B008] rounded-full flex items-center justify-center">
+                    <img src="/services-resources/check-icon.svg" alt="Check Icon" />
+                    </div>
+                    <p className="mt-2 text-center text-sm text-gray-700">Booking <br /> Confirmation</p>
+                </div>
+            </div>
+
+            {/* Hotel's Facilities */}
+       
+                           {/* Hotel's Facilities */}
+                <div className="bg-[#E7E2D5] py-16 z-0 flex flex-col items-center justify-center"> 
+                <div className="mb-8"> 
+                    <img src="/logo-and-icons/Logo.png" alt="Logo" className="h-48" />
+                </div>
+
+                {/* Calendar Section */}
+                <div className="flex flex-col items-center"> 
+                <form action="" className="flex items-center mb-8"> 
+                    <label htmlFor="" className="mr-4 font-semibold text-gray-500">Start Date</label>
+                    <input type="date" id='start_date' className="mr-4 border border-gray-300 p-2 rounded-lg shadow-lg" />
+                    <label htmlFor="" className="mr-4 font-semibold text-gray-500">End Date</label>
+                    <input type="date" id='end_date' className="border border-gray-300 p-2 rounded-lg shadow-lg" />
+                </form>
+                <SecondaryButton>Submit</SecondaryButton>
+                </div>
+
+                </div>
+      
+             {/* Legend Section */}
+
+             <div className="flex flex-col space-y-4 p-20 ml-40">
+                <p className="text-2xl font-bold mb-8">LEGEND</p>
+                <div className="flex items-center space-x-4">
+                    <div className="h-10 w-20 bg-[#D9D9D9]"></div>
+                    <span className="text-lg">Available Date</span>
+                    <div className="h-10 w-20 bg-[#A39999]"></div>
+                    <span className="text-lg">Not Available</span>
+                </div>
+
+                <div className="flex items-center space-x-4">
+                    <div className="h-10 w-20 bg-[#F8B008]"></div>
+                    <span className="text-lg">Check-out Date</span>
+                    <div className="h-10 w-20 bg-[#024635]"></div>
+                    <span className="text-lg">Check-in Date</span>
+                </div>
+            </div>
+
+              {/* Rooms Section */}
+              
+                              {/*HOTEL’S ROOM & SUITES Section*/}
+                              <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mt-8 mx-32 mb-10">
+                                  <div className="bg-[#D9D9D9] shadow-lg rounded-lg overflow-hidden border border-[#A39999] w-[330px] h-[415px]">
+                                      <img
+                                      src="/home-resources/hotelroom2.png"
+                                      alt="Room 1"
+                                      className="w-full h-64 object-cover"
+                                      />
+                                      <div className="p-2">
+                                          <p className="text-[#DB9A02] text-sm">LUXURY ROOM</p>
+                                          <h3 className="text-lg font-semibold text-gray-800">Double Suit Rooms</h3>
+                                          <p className="text-[#A39999] text-xs mt-1">1500 SQ.FT/Rooms</p>
+                                          <div className="border-t border-[#A39999] mt-2 pt-2 flex">
+                                              <div className="flex-1 border-r border-[#A39999] pr-2 flex items-center">
+                                                  <FontAwesomeIcon icon={faBed} className="text-[#A39999] mr-2" />
+                                                  <p className="text-xs text-[#A39999]">2 King Bed</p>
+                                              </div>
+                                              {/*stars */}
+                                              <div className="flex-1 pl-2 flex items-center">
+                                                  <div className="flex">
+                                                      <FontAwesomeIcon icon={faStar} className="text-[#DB9A02] mr-1" />
+                                                      <FontAwesomeIcon icon={faStar} className="text-[#DB9A02] mr-1" />
+                                                      <FontAwesomeIcon icon={faStar} className="text-[#DB9A02] mr-1" />
+                                                      <FontAwesomeIcon icon={faStar} className="text-[#DB9A02] mr-1" />
+                                                      <FontAwesomeIcon icon={faStar} className="text-[#DB9A02]" />
+                                                  </div>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+              
+                                  <div className="bg-[#D9D9D9] shadow-lg rounded-lg overflow-hidden border border-[#A39999] w-[330px] h-[415px]">
+                                      <img
+                                      src="/home-resources/hotelroom3.png"
+                                      alt="Room 2"
+                                      className="w-full h-64 object-cover"
+                                      />
+                                      <div className="p-2">
+                                          <p className="text-[#DB9A02] text-sm">LUXURY ROOM</p>
+                                          <h3 className="text-lg font-semibold text-gray-800">Superior Bed Rooms</h3>
+                                          <p className="text-[#A39999] text-xs mt-1">1500 SQ.FT/Rooms</p>
+                                          <div className="border-t border-[#A39999] mt-2 pt-2 flex">
+                                              <div className="flex-1 border-r border-[#A39999] pr-2 flex items-center">
+                                                  <FontAwesomeIcon icon={faBed} className="text-[#A39999] mr-2" />
+                                                  <p className="text-xs text-[#A39999]">2 King Bed</p>
+                                              </div>
+                                              {/*stars */}
+                                              <div className="flex-1 pl-2 flex items-center">
+                                                  <div className="flex">
+                                                      <FontAwesomeIcon icon={faStar} className="text-[#DB9A02] mr-1" />
+                                                      <FontAwesomeIcon icon={faStar} className="text-[#DB9A02] mr-1" />
+                                                      <FontAwesomeIcon icon={faStar} className="text-[#DB9A02] mr-1" />
+                                                      <FontAwesomeIcon icon={faStar} className="text-[#DB9A02] mr-1" />
+                                                      <FontAwesomeIcon icon={faStar} className="text-[#DB9A02]" />
+                                                  </div>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                                  
+                                  <div className="bg-[#D9D9D9] shadow-lg rounded-lg overflow-hidden border border-[#A39999] w-[330px] h-[415px]">
+                                      <img
+                                      src="/home-resources/hotelroom1.png"
+                                      alt="Room 3"
+                                      className="w-full h-64 object-cover"
+                                      />
+                                      <div className="p-2">
+                                      <p className="text-[#DB9A02] text-sm">LUXURY ROOM</p>
+                                      <h3 className="text-lg font-semibold text-gray-800">Delux Family Rooms</h3>
+                                      <p className="text-[#A39999] text-xs mt-1">1500 SQ.FT/Rooms</p>
+                                          <div className="border-t border-[#A39999] mt-2 pt-2 flex">
+                                              <div className="flex-1 border-r border-[#A39999] pr-2 flex items-center">
+                                              <FontAwesomeIcon icon={faBed} className="text-[#A39999] mr-2" />
+                                              <p className="text-xs text-[#A39999]">2 King Bed</p>
+                                              </div>
+                                              <div className="flex-1 pl-2 flex items-center">
+                                                  <div className="flex">
+                                                      <FontAwesomeIcon icon={faStar} className="text-[#DB9A02] mr-1" />
+                                                      <FontAwesomeIcon icon={faStar} className="text-[#DB9A02] mr-1" />
+                                                      <FontAwesomeIcon icon={faStar} className="text-[#DB9A02] mr-1" />
+                                                      <FontAwesomeIcon icon={faStar} className="text-[#DB9A02] mr-1" />
+                                                      <FontAwesomeIcon icon={faStar} className="text-[#DB9A02]" />
+                                                  </div>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+
+               {/* Form Section */}
+
+               <div>
+                    <div className="flex justify-between border-2 border-grey-500 px-40 py-10 m-40">
+                        <div className="w-1/2">
+                                <p className="text-[#F8B008] mb-4 text-lg">CONTACT US</p>
+                                <h2 className="text-3xl font-bold mb-4">GET IN TOUCH WITH US</h2>
+                                <p className="mb-6 text-lg tracking-wide">
+                                    Reach out to us for personalized assistance,<br /> booking inquiries, or any special requests. <br /> We're here to ensure your stay is nothing <br /> short of exceptional.
+                                </p>
+
+                                <div className="flex items-center">
+                                    <img src="/services-resources/phone-icon.svg" alt="Phone Icon" />
+                                    <p className="text-[#A39999] ml-2">Call Us Now</p>     
+                                </div>
+                                <a href="tel:0910-8733-244" class="ml-10 underline">0910-8733-244</a>
+                                <hr className="w-1/2 mt-2"/>
+
+                                <div className="flex items-center mt-4">
+                                <img src="/services-resources/email-icon.svg" alt="Email Icon" />
+                                    <p className="text-[#A39999] ml-2">Sent us email</p>
+                                </div>
+                                <a href="mailto:technopark@gmail.com" class="ml-10  underline">technopark@gmail.com</a>
+                                <hr className="w-1/2 mt-2"/>
+
+                                <div className="flex items-center mt-4">
+                                <img src="/services-resources/location-icon.svg" alt="Location Icon" />
+                                    <p className="text-[#A39999] ml-2">Our Location</p>
+                                </div>
+                                <p class="ml-10">7359+667, Greenfield Pkwy, Santa Rosa, Laguna</p>
+                        </div>
+
+                        <div className="w-1/2 bg-[#024635] p-6 text-white">
+                        <h2 className="text-[#F8B008] text-2xl font-semibold mb-4 text-center">WHAT IS YOUR CONCERN?</h2>
+                        <form action="" className="px-10">
+                            <input type="text" placeholder="Your Name" class="w-full p-3 mb-4 border border-white bg-transparent focus:outline-none focus:border-green-400 placeholder-white"/>
+                            <input type="email" placeholder="Enter Your Email" class="w-full p-3 mb-4 border border-gray-300 bg-transparent focus:outline-none focus:border-green-400 placeholder-white"/>
+                            <select className="w-full p-3 mb-4 border border-gray-300 bg-transparent focus:outline-none focus:border-green-400">
+                                <option value="">Select Subject</option>
+                                {/* Add more options here */}
+                            </select>
+                            <textarea rows="4" placeholder="Write Message" class="w-full p-3 mb-4 border border-white bg-transparent focus:outline-none focus:border-green-400 placeholder-white"></textarea>
+                            <button className="bg-[#F8B008] text-white px-4 py-2 hover:bg-yellow-500 w-full">SENT MESSAGE</button>
+                        </form>
+                       
+                        </div>
+                    </div>
+                </div>
+
+                 {/* Footer Section */}
+               <Footer></Footer>
+
+            </ServicesBody>
+              
         </>
     );
 }

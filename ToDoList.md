@@ -6,8 +6,8 @@
 2. Install dependencies:
     composer install
     npm install
-    composer require laravel/breeze --dev
-    php artisan breeze:install
+    // composer require laravel/breeze --dev // - kahit wag na to
+    // php artisan breeze:install // -wag na gawin to
 
 3. Set up the environment:
     cp .env.example .env

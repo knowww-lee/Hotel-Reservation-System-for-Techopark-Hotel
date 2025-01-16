@@ -22,7 +22,7 @@ export default function Home() {
                         </p>
                      
                         <h1 className="text-white text-4xl md:text-6xl font-bold">
-                            ARRIVE AS A GUEST LEAVE<br /> AS A FAMILY
+                            ARRIVE AS A GUEST, LEAVE<br /> AS A FAMILY
                         </h1>
 
                         <SecondaryButton className="mt-12">
@@ -118,7 +118,7 @@ export default function Home() {
                 </div>
 
                 {/*HOTEL’S ROOM & SUITES Section*/}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mt-8 mx-24 mb-6">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mt-8 mx-32 mb-6">
                     <div className="bg-[#D9D9D9] shadow-lg rounded-lg overflow-hidden border border-[#A39999] w-[330px] h-[415px]">
                         <img
                         src="/home-resources/hotelroom2.png"
@@ -268,7 +268,7 @@ export default function Home() {
                 </div>
 
                 {/*Best Travelling Spot Section*/}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mt-8 mx-24 mb-6">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mt-8 mx-32 mb-6">
                     <div className="bg-[#D9D9D9] shadow-lg rounded-lg overflow-hidden border border-[#A39999] w-[330px] h-[415px]">
                         <img
                         src="/home-resources/hotelroom2.png"
@@ -282,7 +282,7 @@ export default function Home() {
                                 <div className="flex-1 border-r border-[#A39999] pr-2 flex items-center">
                                     <p className="text-xs text-[#A39999]">READ MORE</p>
                                 </div>
-                                {/*stars */}
+                                {/*arrow */}
                                 <div className="flex-1 pl-2 flex items-center">
                                     <div className="flex">
                                         <FontAwesomeIcon icon={faArrowRight} className="text-[#DB9A02] text-lg transform scale-x-150" /> 
@@ -305,7 +305,7 @@ export default function Home() {
                                 <div className="flex-1 border-r border-[#A39999] pr-2 flex items-center">
                                     <p className="text-xs text-[#A39999]">READ MORE</p>
                                 </div>
-                                {/*stars */}
+                                {/*arrow */}
                                 <div className="flex-1 pl-2 flex items-center">
                                     <div className="flex">
                                         <FontAwesomeIcon icon={faArrowRight} className="text-[#DB9A02] text-lg transform scale-x-150" /> 
