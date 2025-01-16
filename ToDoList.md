@@ -30,7 +30,7 @@
     php artisan view:clear
 
 
----
+-----------------------------------------------------------
 # January 4, 2025 (Update)
 
 1. Run in the terminal:
@@ -46,3 +46,10 @@
     npm install --save @fortawesome/react-fontawesome
 
     npm install @fortawesome/free-solid-svg-icons
+
+
+---------------------------------------------------
+# January 17, 2025 (Update)
+
+1. Run in the terminal:
+    php artisan migrate:fresh //[Note]: Dropping and then migrating of tables.
