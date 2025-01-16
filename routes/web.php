@@ -8,6 +8,9 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AboutController;
 use App\Http\Controllers\ServicesController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\FrontDeskController;
+use App\Http\Controllers\GuestController;
+use App\Http\Controllers\RoomsController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/about', [AboutController::class, 'index'])->name('about');
@@ -19,10 +22,9 @@ Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('/room', function () {
-    return Inertia::render('Room');
-})->name('room');
-
+Route::get('/frontdesk', [FrontDeskController::class, 'index'])->name('frontdesk');
+Route::get('/guest', [GuestController::class, 'index'])->name('guest');
+Route::get('/rooms', [RoomsController::class, 'index'])->name('rooms');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
