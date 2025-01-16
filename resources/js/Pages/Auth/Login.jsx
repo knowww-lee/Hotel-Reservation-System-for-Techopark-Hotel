@@ -3,13 +3,11 @@ import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
-import GuestLayout from '@/Layouts/GuestLayout';
 import { Head, Link, useForm } from '@inertiajs/react';
 import { useState } from 'react';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faGoogle, faFacebook, faLinkedin } from '@fortawesome/free-brands-svg-icons';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export default function Login({ status, canResetPassword }) {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -150,22 +148,6 @@ export default function Login({ status, canResetPassword }) {
                             Sign Up
                         </Link>
                     </div>
-
-                    <div className="w-3/4 mt-6 text-center flex items-center justify-between">
-                        <span className="text-gray-600 text-sm mx-6">Or sign in with</span>
-                        <div className="flex space-x-4">
-                        <Link href="#" className="bg-white rounded-full p-1 shadow-md hover:shadow-lg transition">
-                                <FontAwesomeIcon icon={faGoogle} className="text-2xl text-red-600" />
-                            </Link>
-                            <Link href="#" className="bg-white rounded-full p-1 shadow-md hover:shadow-lg transition">
-                                <FontAwesomeIcon icon={faFacebook} className="text-2xl text-blue-600" />
-                            </Link>
-                            <Link href="#" className="bg-white rounded-full p-1 shadow-md hover:shadow-lg transition">
-                                <FontAwesomeIcon icon={faLinkedin} className="text-2xl text-blue-700" />
-                            </Link>
-                        </div>
-                    </div>
-
                 </div>
             </div>
         </>
