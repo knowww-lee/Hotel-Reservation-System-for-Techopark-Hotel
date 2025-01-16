@@ -65,7 +65,7 @@ export default function Services() {
           {/* Room Image */}
           <div className="md:col-span-2">
             <img
-              src="https://via.placeholder.com/600x400" // Replace with the actual image URL
+              src="" 
               alt="Delux Family Room"
               className="rounded-lg shadow-md"
             />
