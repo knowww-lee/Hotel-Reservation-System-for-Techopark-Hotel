@@ -1,9 +1,9 @@
-import { Head } from '@inertiajs/react';
-import HeaderLayout from '@/Layouts/HeaderLayout';
 import PrimaryButton from '@/Components/PrimaryButton';
 import SecondaryButton from '@/Components/SecondaryButton';
+import HeaderLayout from '@/Layouts/HeaderLayout';
+import { faBed, faStar } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBed, faStar, faArrowRight } from '@fortawesome/free-solid-svg-icons';
+import { Head } from '@inertiajs/react';
 
 export default function Home() {
     return (
@@ -246,105 +246,9 @@ export default function Home() {
                         About More
                         </PrimaryButton>
                     </div>
-                </div>
-
-                {/*Our Blog Section */}
-                <div className="bg-[#024635] p-8 mt-24" style={{ paddingLeft: "20%", paddingRight: "20%" }}>
-                    <div className="flex justify-center mb-4">
-                        <img src="/logo-and-icons/Logo.png" alt="Logo" className="h-24" />
-                    </div>
-
-                    <div className="text-center text-[#F8B008] text-lg mb-2">
-                        OUR BLOG
-                    </div>
-
-                    <div className="text-center text-white text-lg mb-4">
-                        Recent News & Articles
-                    </div>
-
-                    <div className="text-center text-white text-md mb-6">
-                        Dive into our stories and stay updated with the latest news, inspiring articles, and behind-the-scenes highlights from our exceptional hotel.
-                    </div>
-                </div>
-
-                {/*Best Travelling Spot Section*/}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mt-8 mx-32 mb-6">
-                    <div className="bg-[#D9D9D9] shadow-lg rounded-lg overflow-hidden border border-[#A39999] w-[330px] h-[415px]">
-                        <img
-                        src="/home-resources/hotelroom2.png"
-                        alt="Room 1"
-                        className="w-full h-64 object-cover"
-                        />
-                        <div className="p-2">
-                            <p className="text-sm">[Date]</p>
-                            <h3 className="text-lg font-semibold text-gray-800">Best Travelling Spot</h3>
-                            <div className="border-t border-[#A39999] mt-2 pt-2 flex">
-                                <div className="flex-1 border-r border-[#A39999] pr-2 flex items-center">
-                                    <p className="text-xs text-[#A39999]">READ MORE</p>
-                                </div>
-                                {/*arrow */}
-                                <div className="flex-1 pl-2 flex items-center">
-                                    <div className="flex">
-                                        <FontAwesomeIcon icon={faArrowRight} className="text-[#DB9A02] text-lg transform scale-x-150" /> 
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="bg-[#D9D9D9] shadow-lg rounded-lg overflow-hidden border border-[#A39999] w-[330px] h-[415px]">
-                        <img
-                        src="/home-resources/hotelroom2.png"
-                        alt="Room 2"
-                        className="w-full h-64 object-cover"
-                        />
-                        <div className="p-2">
-                            <p className="text-sm">[Date]</p>
-                            <h3 className="text-lg font-semibold text-gray-800">Best Travelling Spot</h3>
-                            <div className="border-t border-[#A39999] mt-2 pt-2 flex">
-                                <div className="flex-1 border-r border-[#A39999] pr-2 flex items-center">
-                                    <p className="text-xs text-[#A39999]">READ MORE</p>
-                                </div>
-                                {/*arrow */}
-                                <div className="flex-1 pl-2 flex items-center">
-                                    <div className="flex">
-                                        <FontAwesomeIcon icon={faArrowRight} className="text-[#DB9A02] text-lg transform scale-x-150" /> 
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div className="bg-[#D9D9D9] shadow-lg rounded-lg overflow-hidden border border-[#A39999] w-[330px] h-[415px]">
-                        <img
-                        src="/home-resources/hotelroom2.png"
-                        alt="Room 3"
-                        className="w-full h-64 object-cover"
-                        />
-                        <div className="p-2">
-                        <p className="text-sm">[Date]</p>
-                        <h3 className="text-lg font-semibold text-gray-800">Best Travelling Spot</h3>
-                            <div className="border-t border-[#A39999] mt-2 pt-2 flex">
-                                <div className="flex-1 border-r border-[#A39999] pr-2 flex items-center">
-                                <p className="text-xs text-[#A39999]">READ MORE</p>
-                                </div>
-                                <div className="flex-1 pl-2 flex items-center">
-                                    <div className="flex">
-                                        <FontAwesomeIcon icon={faArrowRight} className="text-[#DB9A02] text-lg transform scale-x-150" /> 
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-
-
-
-
-             
+                </div>       
             </div>
-
+            
         </>
     );
 }

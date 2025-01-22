@@ -1,11 +1,7 @@
-import { Head } from '@inertiajs/react';
 import HeaderLayout from '@/Layouts/HeaderLayout';
+import { Head } from '@inertiajs/react';
 import AboutBody from "../Layouts/AboutBody";
 import Footer from "../Layouts/Footer";
-import SecondaryButton from '@/Components/SecondaryButton';
-import PrimaryButton from '@/Components/PrimaryButton';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBed, faStar, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 
 export default function About() {
     return (
@@ -61,9 +57,6 @@ export default function About() {
                                             excellence, we pride <br /> ourselves on creating moments that leave <br /> a lasting
                                             impression.
                                             </p>
-                                            <PrimaryButton className="w-1/4 mt-6" >
-                                                About More
-                                            </PrimaryButton>
                                         </div>
                         </div>
 
@@ -121,18 +114,7 @@ export default function About() {
 
                         {/*HOTEL’S ROOM & SUITES Section*/}
                         <div className="max-w-7xl mx-auto px-4 text-center mt-20">
-                            <img
-                                src="/logo-and-icons/Logo.png"
-                                alt="Logo"
-                                className="h-24 w-24 mx-auto mb-4" 
-                            />
-                            <h2 className="text-3xl font-semibold text-gray-800">
-                            Awards and Honors
-                            </h2>
-                            <p className="mt-4 text-gray-600">
-                            Celebrate our journey of excellence and stay updated with the latest awards, inspiring milestones, <br />
-                            and behind-the-scenes highlights from our exceptional hotel
-                            </p>
+
                         </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8 mx-32 mb-6">
@@ -148,11 +130,9 @@ export default function About() {
                                 <div className="border-t border-[#A39999] mt-2 pt-2 flex">
                                     <div className="flex-1 border-r border-[#A39999] pr-2 flex items-center">
                                     
-                                        <p className="text-xs text-[#A39999]">Read More</p>
                                     </div>
                                     <div className="flex-1 pl-2 flex items-center">
                                         <div className="flex">
-                                            <FontAwesomeIcon icon={faArrowRight} />
                                         </div>
                                     </div>
                                 </div>
@@ -170,11 +150,9 @@ export default function About() {
                                 <h3 className="text-lg font-semibold text-gray-800">Best Travelling Spot</h3>
                                 <div className="border-t border-[#A39999] mt-2 pt-2 flex">
                                     <div className="flex-1 border-r border-[#A39999] pr-2 flex items-center">
-                                        <p className="text-xs text-[#A39999]">Read More</p>
                                     </div>
                                     <div className="flex-1 pl-2 flex items-center">
                                         <div className="flex">
-                                        <FontAwesomeIcon icon={faArrowRight} />
                                         </div>
                                     </div>
                                 </div>
@@ -192,11 +170,9 @@ export default function About() {
                             <h3 className="text-lg font-semibold text-gray-800">Best in CALABARZON</h3>
                                 <div className="border-t border-[#A39999] mt-2 pt-2 flex">
                                     <div className="flex-1 border-r border-[#A39999] pr-2 flex items-center">
-                                    <p className="text-xs text-[#A39999]">Read More</p>
                                     </div>
                                     <div className="flex-1 pl-2 flex items-center">
                                         <div className="flex">
-                                        <FontAwesomeIcon icon={faArrowRight} />
                                         </div>
                                     </div>
                                 </div>
