@@ -1,12 +1,47 @@
-import SecondaryButton from '@/Components/SecondaryButton';
 import HeaderLayout from '@/Layouts/HeaderLayout';
 import { faBed, faStar } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Head } from '@inertiajs/react';
+import { Head, router, useForm } from '@inertiajs/react';
+import Swal from 'sweetalert2';
 import Footer from "../Layouts/Footer";
 import ServicesBody from "../Layouts/ServicesBody";
 
 export default function Services() {
+    const { data: contactData, setData: setContactData, post, processing, reset } = useForm({
+        name: '',
+        email: '',
+        subject: '',
+        message: ''
+    });
+
+    const handleBookNow = () => {
+        router.visit(route('room'));
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        
+        post(route('contact.store'), {
+            onSuccess: () => {
+                Swal.fire({
+                    title: 'Message Sent!',
+                    text: 'Thank you for contacting us. We will get back to you soon.',
+                    icon: 'success',
+                    confirmButtonColor: '#024635'
+                });
+                reset();
+            },
+            onError: (errors) => {
+                Swal.fire({
+                    title: 'Error',
+                    text: Object.values(errors)[0],
+                    icon: 'error',
+                    confirmButtonColor: '#024635'
+                });
+            }
+        });
+    };
+
     return (
         <>
             <Head title="Services" />
@@ -70,15 +105,14 @@ export default function Services() {
                     <img src="/logo-and-icons/Logo.png" alt="Logo" className="h-48" />
                 </div>
 
-                {/* Calendar Section */}
-                <div className="flex flex-col items-center"> 
-                <form action="" className="flex items-center mb-8"> 
-                    <label htmlFor="" className="mr-4 font-semibold text-gray-500">Start Date</label>
-                    <input type="date" id='start_date' className="mr-4 border border-gray-300 p-2 rounded-lg shadow-lg" />
-                    <label htmlFor="" className="mr-4 font-semibold text-gray-500">End Date</label>
-                    <input type="date" id='end_date' className="border border-gray-300 p-2 rounded-lg shadow-lg" />
-                </form>
-                <SecondaryButton>Submit</SecondaryButton>
+                {/* Book Now Button */}
+                <div className="flex flex-col items-center mb-8"> 
+                    <button
+                        onClick={handleBookNow}
+                        className="bg-[#024635] text-white px-8 py-3 rounded-lg hover:bg-[#023625] transition-colors duration-200 font-semibold text-lg shadow-lg"
+                    >
+                        BOOK NOW
+                    </button>
                 </div>
 
                 </div>
@@ -104,7 +138,7 @@ export default function Services() {
 
               {/* Rooms Section */}
               
-                              {/*HOTEL’S ROOM & SUITES Section*/}
+                              {/*HOTEL'S ROOM & SUITES Section*/}
                               <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mt-8 mx-32 mb-10">
                                   <div className="bg-[#D9D9D9] shadow-lg rounded-lg overflow-hidden border border-[#A39999] w-[330px] h-[415px]">
                                       <img
@@ -227,15 +261,50 @@ export default function Services() {
 
                         <div className="w-1/2 bg-[#024635] p-6 text-white">
                         <h2 className="text-[#F8B008] text-2xl font-semibold mb-4 text-center">WHAT IS YOUR CONCERN?</h2>
-                        <form action="" className="px-10">
-                            <input type="text" placeholder="Your Name" class="w-full p-3 mb-4 border border-white bg-transparent focus:outline-none focus:border-green-400 placeholder-white"/>
-                            <input type="email" placeholder="Enter Your Email" class="w-full p-3 mb-4 border border-gray-300 bg-transparent focus:outline-none focus:border-green-400 placeholder-white"/>
-                            <select className="w-full p-3 mb-4 border border-gray-300 bg-transparent focus:outline-none focus:border-green-400">
-                                <option value="">Select Subject</option>
-                                {/* Add more options here */}
+                        <form onSubmit={handleSubmit} className="px-10">
+                            <input 
+                                type="text" 
+                                placeholder="Your Name" 
+                                value={contactData.name}
+                                onChange={e => setContactData('name', e.target.value)}
+                                className="w-full p-3 mb-4 border border-white bg-transparent focus:outline-none focus:border-green-400 placeholder-white"
+                                required
+                            />
+                            <input 
+                                type="email" 
+                                placeholder="Enter Your Email" 
+                                value={contactData.email}
+                                onChange={e => setContactData('email', e.target.value)}
+                                className="w-full p-3 mb-4 border border-gray-300 bg-transparent focus:outline-none focus:border-green-400 placeholder-white"
+                                required
+                            />
+                            <select
+                                id="subject"
+                                value={contactData.subject}
+                                onChange={e => setContactData('subject', e.target.value)}
+                                className="w-full px-3 py-2 border rounded-md bg-[#024635] text-white focus:outline-none focus:ring-2 focus:ring-green-500"
+                                required
+                            >
+                                <option value="">Select a subject</option>
+                                <option value="Booking Inquiry">Booking Inquiry</option>
+                                <option value="Room Information">Room Information</option>
+                                <option value="Feedback">Feedback</option>
                             </select>
-                            <textarea rows="4" placeholder="Write Message" class="w-full p-3 mb-4 border border-white bg-transparent focus:outline-none focus:border-green-400 placeholder-white"></textarea>
-                            <button className="bg-[#F8B008] text-white px-4 py-2 hover:bg-yellow-500 w-full">SENT MESSAGE</button>
+                            <textarea 
+                                rows="4" 
+                                placeholder="Write Message" 
+                                value={contactData.message}
+                                onChange={e => setContactData('message', e.target.value)}
+                                className="w-full p-3 mb-4 border border-white bg-transparent focus:outline-none focus:border-green-400 placeholder-white"
+                                required
+                            ></textarea>
+                            <button 
+                                type="submit"
+                                disabled={processing}
+                                className="bg-[#F8B008] text-white px-4 py-2 hover:bg-yellow-500 w-full disabled:opacity-50"
+                            >
+                                {processing ? 'SENDING...' : 'SEND MESSAGE'}
+                            </button>
                         </form>
                        
                         </div>

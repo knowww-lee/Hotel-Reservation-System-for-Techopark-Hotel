@@ -3,10 +3,7 @@ import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import { Head, Link, useForm } from '@inertiajs/react';
-import { useState } from 'react';
-
-import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Swal from 'sweetalert2';
 
 export default function Register() {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -16,25 +13,92 @@ export default function Register() {
         password_confirmation: '',
     });
 
+    const validateEmail = (email) => {
+        const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+        return emailRegex.test(email);
+    };
+
+    const validatePassword = (password) => {
+        const hasUpperCase = /[A-Z]/.test(password);
+        const hasLowerCase = /[a-z]/.test(password);
+        const hasNumbers = /\d/.test(password);
+        const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+        const isLongEnough = password.length >= 8;
+
+        return {
+            isValid: hasUpperCase && hasLowerCase && hasNumbers && hasSpecialChar && isLongEnough,
+            errors: {
+                uppercase: !hasUpperCase ? 'Missing uppercase letter' : '',
+                lowercase: !hasLowerCase ? 'Missing lowercase letter' : '',
+                number: !hasNumbers ? 'Missing number' : '',
+                special: !hasSpecialChar ? 'Missing special character' : '',
+                length: !isLongEnough ? 'Password must be at least 8 characters' : ''
+            }
+        };
+    };
+
     const submit = (e) => {
         e.preventDefault();
 
+        // Validate email
+        if (!validateEmail(data.email)) {
+            Swal.fire({
+                title: 'Invalid Email',
+                text: 'Please enter a valid email address',
+                icon: 'error',
+                confirmButtonColor: '#024635'
+            });
+            return;
+        }
+
+        // Validate password
+        const passwordValidation = validatePassword(data.password);
+        if (!passwordValidation.isValid) {
+            const errorMessages = Object.values(passwordValidation.errors)
+                .filter(error => error !== '')
+                .join('\n');
+            
+            Swal.fire({
+                title: 'Invalid Password',
+                html: errorMessages.replace(/\n/g, '<br>'),
+                icon: 'error',
+                confirmButtonColor: '#024635'
+            });
+            return;
+        }
+
+        // Validate password confirmation
+        if (data.password !== data.password_confirmation) {
+            Swal.fire({
+                title: 'Password Mismatch',
+                text: 'Password and confirmation do not match',
+                icon: 'error',
+                confirmButtonColor: '#024635'
+            });
+            return;
+        }
+
         post(route('register'), {
-            onFinish: () => reset('password', 'password_confirmation'),
+            onSuccess: () => {
+                Swal.fire({
+                    title: 'Success!',
+                    text: 'Registration successful!',
+                    icon: 'success',
+                    timer: 1500,
+                    showConfirmButton: false
+                });
+                reset('password', 'password_confirmation');
+            },
+            onError: (errors) => {
+                const errorMessage = Object.values(errors)[0];
+                Swal.fire({
+                    title: 'Error',
+                    text: errorMessage,
+                    icon: 'error',
+                    confirmButtonColor: '#024635'
+                });
+            }
         });
-    };
-
-    //Password visibility
-    const [showPassword, setShowPassword] = useState(false);
-    
-    const togglePasswordVisibility = () => {
-        setShowPassword(!showPassword);
-    };
-
-    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-
-    const toggleConfirmPasswordVisibility = () => {
-        setShowConfirmPassword(!showConfirmPassword);
     };
 
     return (
@@ -68,7 +132,7 @@ export default function Register() {
                             />
 
                             <InputError message={errors.email} className="mt-2" />
-                            
+                            <p className="text-xs text-gray-500 mt-1">Please enter a valid email address (e.g., user@example.com)</p>
                         </div>
 
                         <div className="mt-4">
@@ -89,7 +153,6 @@ export default function Register() {
                             />
 
                             <InputError message={errors.name} className="mt-2" />
-                           
                         </div>
 
                         <div className="mt-4">
@@ -100,25 +163,28 @@ export default function Register() {
                             <div className="relative">
                                 <TextInput
                                     id="password"
-                                    type={showPassword ? 'text' : 'password'} 
+                                    type="password"
                                     name="password"
                                     placeholder="Enter your password"
                                     value={data.password}
                                     className="mt-1 block w-full placeholder-small"
-                                    autoComplete="current-password"
+                                    autoComplete="new-password"
                                     onChange={(e) => setData('password', e.target.value)}
+                                    required
                                 />
-
-                                <button
-                                    type="button"
-                                    className="absolute right-3 top-3 text-gray-600"
-                                    onClick={togglePasswordVisibility}
-                                >
-                                    <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
-                                </button>
                             </div>
 
                             <InputError message={errors.password} className="mt-2" />
+                            <div className="text-xs text-gray-500 mt-1">
+                                Password must contain:
+                                <ul className="list-disc list-inside">
+                                    <li>At least 8 characters</li>
+                                    <li>At least one uppercase letter</li>
+                                    <li>At least one lowercase letter</li>
+                                    <li>At least one number</li>
+                                    <li>At least one special character {'(!@#$%^&*(),.?":{}|<>)'}</li>
+                                </ul>
+                            </div>
                         </div>
 
                         <div className="mt-4">
@@ -129,7 +195,7 @@ export default function Register() {
                             <div className="relative">
                                 <TextInput
                                     id="password_confirmation"
-                                    type={showConfirmPassword ? 'text' : 'password'}
+                                    type="password"
                                     name="password_confirmation"
                                     placeholder="Confirm your password"
                                     value={data.password_confirmation}
@@ -138,14 +204,6 @@ export default function Register() {
                                     onChange={(e) => setData('password_confirmation', e.target.value)}
                                     required
                                 />
-
-                                <button
-                                    type="button"
-                                    className="absolute right-3 top-3 text-gray-600"
-                                    onClick={toggleConfirmPasswordVisibility}
-                                >
-                                    <FontAwesomeIcon icon={showConfirmPassword ? faEyeSlash : faEye} />
-                                </button>
                             </div>
 
                             <InputError
@@ -160,7 +218,6 @@ export default function Register() {
                                     Sign Up
                             </PrimaryButton>
                         </div>
-                       
 
                         <div className="mt-4 flex flex-col items-center justify-center">
                             <span className="text-sm text-gray-600">
@@ -176,7 +233,7 @@ export default function Register() {
                     </form>
                 </div>
                 
-                 {/*Image */}
+                {/*Image */}
                 <div className="w-1/2 flex justify-center items-center relative">
                     <img src="/login-signup-img/image1.png" alt="Login Image" className="w-3/4 h-[90%] object-cover rounded-[30px]" />
                     <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white text-4xl font-extrabold text-right" style={{ textShadow: '2px 2px 4px rgba(0, 0, 0, 0.7)' }}>
@@ -184,8 +241,6 @@ export default function Register() {
                     </div>
                 </div>
             </div>
-
-            
         </>
     );
 }
