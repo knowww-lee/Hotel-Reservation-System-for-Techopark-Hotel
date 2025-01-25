@@ -1,5 +1,5 @@
 import ApplicationLogo from '@/Components/ApplicationLogo';
-import { Link} from '@inertiajs/react';
+import { Link } from '@inertiajs/react';
 
 export default function Sidebar() {
     return (
@@ -41,33 +41,6 @@ export default function Sidebar() {
               </span>
           </Link>
       </li>
-
-      <li className="mb-4 px-10">
-            <Link
-                href={route('frontdesk')}
-                className={`flex items-center p-4 rounded-2xl ${
-                    route().current('frontdesk') ? 'bg-[#024635]' : 'hover:bg-gray-100'
-                }`}
-            >
-                <img
-                  src={
-                    route().current('frontdesk')
-                        ? '/dashboard-resources/active-frontdesk-icon.svg' // Active state image
-                        : '/dashboard-resources/frontdesk-icon.svg' // Default image
-                }
-                alt="Front Desk Icon"
-              
-                />
-                <span
-                    className={`ml-3 text-center text-xl font-semibold ${
-                        route().current('frontdesk') ? 'text-[#F8B008]' : 'text-[#024635]'
-                    }`}
-                >
-                    Front Desk
-                </span>
-            </Link>
-        </li>
-
 
       <li class="mb-4  px-10">
       <Link
