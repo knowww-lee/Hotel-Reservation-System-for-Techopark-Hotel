@@ -11,8 +11,6 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::dropIfExists('bookings');
-        
         Schema::create('bookings', function (Blueprint $table) {
             $table->id();
             $table->string('name');
@@ -21,6 +19,7 @@ return new class extends Migration
             $table->date('check_in');
             $table->date('check_out');
             $table->enum('room_type', ['normal', 'luxury']);
+            $table->string('room_number')->nullable();
             $table->integer('adults');
             $table->integer('children');
             $table->text('special_requests')->nullable();

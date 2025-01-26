@@ -25,9 +25,60 @@ class BookingController extends Controller
             'special_requests' => 'nullable|string'
         ]);
 
-        $booking = Booking::create($validated);
+        $checkIn = Carbon::parse($validated['check_in']);
+        $checkOut = Carbon::parse($validated['check_out']);
 
-        return redirect()->back()->with('success', 'Booking Successful!');
+        // Get all booked rooms for the given room type and date range
+        $bookedRooms = Booking::where('room_type', $validated['room_type'])
+            ->where('status', 'confirmed')
+            ->where(function ($query) use ($checkIn, $checkOut) {
+                $query->whereBetween('check_in', [$checkIn, $checkOut])
+                    ->orWhereBetween('check_out', [$checkIn, $checkOut])
+                    ->orWhere(function ($q) use ($checkIn, $checkOut) {
+                        $q->where('check_in', '<=', $checkIn)
+                            ->where('check_out', '>=', $checkOut);
+                    });
+            })
+            ->pluck('room_number')
+            ->toArray();
+
+        // Generate all possible room numbers for the room type
+        $prefix = $validated['room_type'] === 'luxury' ? 'L' : 'N';
+        $allRooms = [];
+        for ($i = 1; $i <= 50; $i++) {
+            $allRooms[] = $prefix . str_pad($i, 3, '0', STR_PAD_LEFT);
+        }
+
+        // Find available rooms
+        $availableRooms = array_values(array_diff($allRooms, $bookedRooms));
+
+        if (empty($availableRooms)) {
+            return back()->withErrors([
+                'room_type' => 'No rooms available for the selected dates and room type.'
+            ]);
+        }
+
+        // Get the first available room
+        $validated['room_number'] = $availableRooms[0];
+        $validated['status'] = 'confirmed';
+
+        try {
+            $booking = Booking::create($validated);
+            
+            \Log::info('Created booking:', ['booking' => $booking->toArray()]);
+
+            return redirect()->back()->with([
+                'success' => true,
+                'message' => 'Booking Successful!',
+                'booking' => [
+                    'id' => $booking->id,
+                    'room_number' => $booking->room_number
+                ]
+            ]);
+        } catch (\Exception $e) {
+            \Log::error('Booking creation failed:', ['error' => $e->getMessage()]);
+            return back()->withErrors(['error' => 'Failed to create booking']);
+        }
     }
 
     public function guestInformation(Request $request)
@@ -81,5 +132,21 @@ class BookingController extends Controller
                 'room_type' => $validated['room_type'],
             ]
         ]);
+    }
+
+    public function destroy(Booking $booking)
+    {
+        $booking->delete();
+        return redirect()->back();
+    }
+
+    public function updateStatus(Request $request, Booking $booking)
+    {
+        $validated = $request->validate([
+            'status' => 'required|in:confirmed,cancelled'
+        ]);
+
+        $booking->update($validated);
+        return redirect()->back();
     }
 }

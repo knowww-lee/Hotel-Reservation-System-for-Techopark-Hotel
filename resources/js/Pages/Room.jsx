@@ -77,14 +77,18 @@ export default function Room({ auth, check_in, check_out, room_type }) {
 
         post('/bookings', bookingData, {
             preserveScroll: true,
-            onSuccess: () => {
+            onSuccess: (response) => {
+                console.log('Booking response:', response);
+                const flash = response?.props?.flash || {};
+                const roomNumber = flash?.booking?.room_number || 'Not assigned';
                 Swal.fire({
                     title: 'Booking Successful!',
-                    text: 'Thank you for choosing our hotel. Your booking has been confirmed.',
+                    html: `Thank you for choosing our hotel.<br>Your room number is: <strong>${roomNumber}</strong><br>Your booking has been confirmed.`,
                     icon: 'success',
-                    confirmButtonText: 'OK'
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#024635'
                 }).then(() => {
-                    window.location.href = route('home');
+                    window.location.href = route('guest');
                 });
             },
             onError: (errors) => {
@@ -198,7 +202,20 @@ export default function Room({ auth, check_in, check_out, room_type }) {
                                                         required
                                                     />
                                                 </div>
-                                                <p><strong>Room Type:</strong> {room_type === 'luxury' ? 'Luxury Room ($200/night)' : 'Normal Room ($100/night)'}</p>
+                                                <div>
+                                                    <label className="block text-sm font-medium mb-1" htmlFor="room_type">
+                                                        Room Type
+                                                    </label>
+                                                    <select
+                                                        id="room_type"
+                                                        value={data.room_type}
+                                                        onChange={e => setData('room_type', e.target.value)}
+                                                        className="w-full px-3 py-2 border rounded-md bg-[#024635] text-white focus:outline-none focus:ring-2 focus:ring-green-500"
+                                                    >
+                                                        <option value="normal">Normal Room (₱100/night)</option>
+                                                        <option value="luxury">Luxury Room (₱200/night)</option>
+                                                    </select>
+                                                </div>
                                             </div>
                                         </div>
 
