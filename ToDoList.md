@@ -59,6 +59,7 @@
 # January 27, 2025 (Update)
 
 1. Run in the terminal:
+    copy .env.example .env
     php artisan migrate:fresh
     php artisan db:seed
 
