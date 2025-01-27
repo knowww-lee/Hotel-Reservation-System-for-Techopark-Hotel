@@ -75,9 +75,9 @@ export default function Register() {
     const handleInputChange = (field, value) => {
         let processedValue = value;
         
-        // For name field, only allow letters and spaces
+        // For name field, only allow letters and spaces, and limit to 255 characters
         if (field === 'name') {
-            processedValue = value.replace(/[^a-zA-Z\s]/g, '');
+            processedValue = value.replace(/[^a-zA-Z\s]/g, '').slice(0, 255);
         }
         // Remove spaces from email and password fields
         else if (field === 'email' || field === 'password' || field === 'password_confirmation') {
@@ -249,10 +249,14 @@ export default function Register() {
                                 isFocused={true}
                                 onChange={(e) => handleInputChange('name', e.target.value)}
                                 required
+                                maxLength={255}
                             />
 
                             <InputError message={errors.name} className="mt-2" />
-                            <p className="text-xs text-gray-500 mt-1">Only letters are allowed in the name field</p>
+                            <div className="flex justify-between text-xs text-gray-500 mt-1">
+                                <span>Only letters are allowed in the name field</span>
+                                <span>{data.name.length}/255</span>
+                            </div>
                         </div>
 
                         <div className="mt-4">
