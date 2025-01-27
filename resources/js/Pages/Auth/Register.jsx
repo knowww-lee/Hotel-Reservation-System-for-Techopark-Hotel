@@ -55,9 +55,13 @@ export default function Register() {
 
     // Update formDirty when any field changes
     useEffect(() => {
-        if (data.name || data.email || data.password || data.password_confirmation) {
-            setFormDirty(true);
-        }
+        const hasInput = Boolean(
+            data.name.trim() || 
+            data.email.trim() || 
+            data.password || 
+            data.password_confirmation
+        );
+        setFormDirty(hasInput);
     }, [data]);
 
     const [passwordRequirements, setPasswordRequirements] = useState({
@@ -68,12 +72,32 @@ export default function Register() {
         length: false
     });
 
+    const handleInputChange = (field, value) => {
+        // Remove spaces from email and password fields
+        if (field === 'email' || field === 'password' || field === 'password_confirmation') {
+            value = value.replace(/\s/g, '');
+        }
+        setData(field, value);
+    };
+
     const validateEmail = (email) => {
+        if (email.includes(' ')) {
+            return false;
+        }
         const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
         return emailRegex.test(email);
     };
 
     const validatePassword = (password) => {
+        if (password.includes(' ')) {
+            return {
+                isValid: false,
+                errors: {
+                    space: 'Password cannot contain spaces'
+                }
+            };
+        }
+
         const hasUpperCase = /[A-Z]/.test(password);
         const hasLowerCase = /[a-z]/.test(password);
         const hasNumbers = /\d/.test(password);
@@ -195,7 +219,7 @@ export default function Register() {
                                 value={data.email}
                                 className="mt-1 block w-full placeholder-small"
                                 autoComplete="username"
-                                onChange={(e) => setData('email', e.target.value)}
+                                onChange={(e) => handleInputChange('email', e.target.value)}
                                 required
                             />
 
@@ -237,7 +261,7 @@ export default function Register() {
                                     value={data.password}
                                     className="mt-1 block w-full placeholder-small"
                                     autoComplete="new-password"
-                                    onChange={(e) => setData('password', e.target.value)}
+                                    onChange={(e) => handleInputChange('password', e.target.value)}
                                     required
                                 />
                             </div>
@@ -279,7 +303,7 @@ export default function Register() {
                                     value={data.password_confirmation}
                                     className="mt-1 block w-full placeholder-small"
                                     autoComplete="new-password"
-                                    onChange={(e) => setData('password_confirmation', e.target.value)}
+                                    onChange={(e) => handleInputChange('password_confirmation', e.target.value)}
                                     required
                                 />
                             </div>

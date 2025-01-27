@@ -16,6 +16,14 @@ export default function Login({ status, canResetPassword }) {
 
     const [formDirty, setFormDirty] = useState(false);
 
+    const handleInputChange = (field, value) => {
+        // Remove spaces from email and password fields
+        if (field === 'email' || field === 'password') {
+            value = value.replace(/\s/g, '');
+        }
+        setData(field, value);
+    };
+
     useEffect(() => {
         const handleBeforeUnload = (e) => {
             if (formDirty) {
@@ -55,13 +63,23 @@ export default function Login({ status, canResetPassword }) {
 
     // Update formDirty when any field changes
     useEffect(() => {
-        if (data.email || data.password) {
-            setFormDirty(true);
-        }
+        const hasInput = Boolean(data.email.trim() || data.password);
+        setFormDirty(hasInput);
     }, [data]);
 
     const submit = (e) => {
         e.preventDefault();
+
+        // Validate no spaces
+        if (data.email.includes(' ') || data.password.includes(' ')) {
+            Swal.fire({
+                title: 'Invalid Input',
+                text: 'Email and password cannot contain spaces',
+                icon: 'error',
+                confirmButtonColor: '#84AAAC',
+            });
+            return;
+        }
 
         post(route('login'), {
             onSuccess: () => {
@@ -130,7 +148,7 @@ export default function Login({ status, canResetPassword }) {
                                 className="mt-1 block w-full placeholder-small"
                                 autoComplete="username"
                                 isFocused={true}
-                                onChange={(e) => setData('email', e.target.value)}
+                                onChange={(e) => handleInputChange('email', e.target.value)}
                             />
 
                             <InputError message={errors.email} className="mt-2" />
@@ -150,7 +168,7 @@ export default function Login({ status, canResetPassword }) {
                                     value={data.password}
                                     className="mt-1 block w-full placeholder-small"
                                     autoComplete="current-password"
-                                    onChange={(e) => setData('password', e.target.value)}
+                                    onChange={(e) => handleInputChange('password', e.target.value)}
                                 />
                             </div>
 
