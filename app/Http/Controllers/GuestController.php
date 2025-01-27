@@ -17,14 +17,20 @@ class GuestController extends Controller
 
             $today = Carbon::today();
             $viewCheckouts = $request->boolean('checkouts', false);
+            $viewCancelled = $request->boolean('cancelled', false); // Added for cancelled bookings view
 
             $query = Booking::select('id', 'name', 'email', 'phone', 'check_in', 'check_out', 'room_type', 'room_number', 'status')
-                ->where('status', 'confirmed');
+                ->whereIn('status', ['confirmed', 'cancelled']); 
 
             if ($viewCheckouts) {
                 // Show only today's checkouts
                 $bookings = $query->whereDate('check_out', $today)
                     ->orderBy('check_out', 'asc')
+                    ->get();
+            } elseif ($viewCancelled) {
+                // Show only cancelled bookings
+                $bookings = $query->where('status', 'cancelled')
+                    ->orderBy('created_at', 'desc')
                     ->get();
             } else {
                 // Show all active bookings
@@ -38,6 +44,7 @@ class GuestController extends Controller
 
             Log::info('Retrieved bookings:', [
                 'view_checkouts' => $viewCheckouts,
+                'view_cancelled' => $viewCancelled,
                 'total_bookings' => $bookings->count(),
                 'today_checkout_count' => $todayCheckoutCount
             ]);
@@ -45,7 +52,8 @@ class GuestController extends Controller
             return Inertia::render('Guest', [
                 'bookings' => $bookings,
                 'todayCheckoutCount' => $todayCheckoutCount,
-                'viewingCheckouts' => $viewCheckouts
+                'viewingCheckouts' => $viewCheckouts,
+                'viewingCancelled' => $viewCancelled
             ]);
         } catch (\Exception $e) {
             Log::error('Error in GuestController@index: ' . $e->getMessage(), [
@@ -54,4 +62,5 @@ class GuestController extends Controller
             return back()->with('error', 'An error occurred while loading the guest list.');
         }
     }
+
 }

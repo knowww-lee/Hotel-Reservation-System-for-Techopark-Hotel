@@ -1,5 +1,5 @@
 import { Head } from '@inertiajs/react';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import AdminDashboard from "../Layouts/AdminDashboard";
 
 export default function Room({ auth, rooms = [], stats = {} }) {
@@ -24,6 +24,11 @@ export default function Room({ auth, rooms = [], stats = {} }) {
     const handlePageChange = (page) => {
         setCurrentPage(page);
     };
+
+    useEffect(() => {
+        console.log('Rooms:', rooms);
+        console.log('Stats:', stats);
+    }, [rooms, stats]);
 
     return (
         <>

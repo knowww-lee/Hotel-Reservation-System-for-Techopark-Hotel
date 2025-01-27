@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import Swal from 'sweetalert2';
 import AdminDashboard from "../Layouts/AdminDashboard";
 
-export default function Guest({ bookings = [], todayCheckoutCount = 0, viewingCheckouts = false }) {
+export default function Guest({ bookings = [], todayCheckoutCount = 0, viewingCheckouts = false, viewingCancelled = false }) {
     useEffect(() => {
         console.log('Guest component mounted with bookings:', { bookings, todayCheckoutCount, viewingCheckouts });
     }, [bookings, todayCheckoutCount, viewingCheckouts]);
@@ -24,8 +24,8 @@ export default function Guest({ bookings = [], todayCheckoutCount = 0, viewingCh
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, []);
 
-    const handleViewChange = (viewCheckouts) => {
-        router.get('/guest', { checkouts: viewCheckouts }, {
+    const handleViewChange = (viewCheckouts, viewCancelled) => {
+        router.get('/guest', { checkouts: viewCheckouts, cancelled: viewCancelled }, {
             preserveState: true,
             preserveScroll: true,
         });
@@ -36,10 +36,15 @@ export default function Guest({ bookings = [], todayCheckoutCount = 0, viewingCh
         return <div>Error: Invalid bookings data</div>;
     }
 
-    const filteredBookings = bookings.filter((booking) =>
+    let filteredBookings = bookings.filter((booking) =>
         (booking.room_number?.toLowerCase() || '').includes(search.toLowerCase()) ||
         (booking.name?.toLowerCase() || '').includes(search.toLowerCase())
     );
+
+    // If viewing check-ins, exclude cancelled bookings
+    if (!viewingCancelled) {
+        filteredBookings = filteredBookings.filter(booking => booking.status !== 'cancelled');
+    }
 
     const statusClasses = {
         confirmed: "bg-[#E7F8F0] text-[#41C588]",
@@ -124,15 +129,15 @@ export default function Guest({ bookings = [], todayCheckoutCount = 0, viewingCh
 
             <AdminDashboard>
                 <h3 className="mb-4 text-[#024635]">
-                    {viewingCheckouts ? "Today's Check-outs" : "Guests"}
+                    {viewingCheckouts ? "Today's Check-outs" : viewingCancelled ? "Cancelled Bookings" : "Guests"}
                 </h3>         
                 <div className="p-4 bg-white">
                     <div className="flex items-center justify-between mb-4">
                         <div>
                             <button 
-                                onClick={() => handleViewChange(false)}
+                                onClick={() => handleViewChange(false, false)}
                                 className={`px-4 py-2 border rounded-3xl mr-4 ${
-                                    !viewingCheckouts 
+                                    !viewingCheckouts && !viewingCancelled 
                                         ? 'bg-[#C2F8EB] border-[#024635] text-[#024635]' 
                                         : 'bg-white border-[#989FAD] text-[#5D6679]'
                                 }`}
@@ -140,7 +145,7 @@ export default function Guest({ bookings = [], todayCheckoutCount = 0, viewingCh
                                 Check in
                             </button>
                             <button 
-                                onClick={() => handleViewChange(true)}
+                                onClick={() => handleViewChange(true, false)}
                                 className={`px-4 py-2 border rounded-3xl ${
                                     viewingCheckouts 
                                         ? 'bg-[#C2F8EB] border-[#024635] text-[#024635]' 
@@ -148,6 +153,13 @@ export default function Guest({ bookings = [], todayCheckoutCount = 0, viewingCh
                                 }`}
                             >
                                 Check out ({todayCheckoutCount})
+                            </button>
+
+                            <button 
+                                onClick={() => handleViewChange(false, true)}
+                                className={`ml-4 px-4 py-2 border rounded-3xl ${viewingCancelled ? 'bg-[#C2F8EB] border-[#024635] text-[#024635]' : 'bg-white border-[#989FAD] text-[#5D6679]'}`}
+                            >
+                                Cancelled Bookings
                             </button>
                         </div>
                        

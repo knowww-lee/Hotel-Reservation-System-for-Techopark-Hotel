@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Booking;
-use App\Models\Guest;
+use App\Models\Room;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
@@ -28,7 +28,7 @@ class BookingController extends Controller
         $checkIn = Carbon::parse($validated['check_in']);
         $checkOut = Carbon::parse($validated['check_out']);
 
-        // Get all booked rooms for the given room type and date range
+        // Get all booked room numbers for the given type and date range
         $bookedRooms = Booking::where('room_type', $validated['room_type'])
             ->where('status', 'confirmed')
             ->where(function ($query) use ($checkIn, $checkOut) {
@@ -42,29 +42,35 @@ class BookingController extends Controller
             ->pluck('room_number')
             ->toArray();
 
-        // Generate all possible room numbers for the room type
-        $prefix = $validated['room_type'] === 'luxury' ? 'L' : 'N';
-        $allRooms = [];
-        for ($i = 1; $i <= 50; $i++) {
-            $allRooms[] = $prefix . str_pad($i, 3, '0', STR_PAD_LEFT);
-        }
+        // Get available rooms from the database
+        $availableRooms = Room::where('room_type', $validated['room_type'])
+            ->whereNotIn('room_number', $bookedRooms)
+            ->where('room_status', 'available')
+            ->first();
 
-        // Find available rooms
-        $availableRooms = array_values(array_diff($allRooms, $bookedRooms));
-
-        if (empty($availableRooms)) {
+        if (!$availableRooms) {
             return back()->withErrors([
                 'room_type' => 'No rooms available for the selected dates and room type.'
             ]);
         }
 
-        // Get the first available room
-        $validated['room_number'] = $availableRooms[0];
-        $validated['status'] = 'confirmed';
+        DB::beginTransaction();
 
         try {
-            $booking = Booking::create($validated);
-            
+            // Create the booking
+            $booking = Booking::create(array_merge($validated, [
+                'room_number' => $availableRooms->room_number,
+                'status' => 'confirmed'
+            ]));
+
+            // Update the room status to booked and associate it with the booking
+            $availableRooms->update([
+                'room_status' => 'booked',
+                'booking_id' => $booking->id
+            ]);
+
+            DB::commit();
+
             \Log::info('Created booking:', ['booking' => $booking->toArray()]);
 
             return redirect()->back()->with([
@@ -76,6 +82,7 @@ class BookingController extends Controller
                 ]
             ]);
         } catch (\Exception $e) {
+            DB::rollBack();
             \Log::error('Booking creation failed:', ['error' => $e->getMessage()]);
             return back()->withErrors(['error' => 'Failed to create booking']);
         }
@@ -91,11 +98,11 @@ class BookingController extends Controller
             'room_type' => 'required|in:normal,luxury'
         ]);
 
-        // Check room availability for the selected type
         $checkIn = Carbon::parse($validated['check_in']);
         $checkOut = Carbon::parse($validated['check_out']);
 
-        $occupiedRooms = Booking::where('room_type', $validated['room_type'])
+        // Get available rooms count for the selected type and date range
+        $bookedRooms = Booking::where('room_type', $validated['room_type'])
             ->where('status', 'confirmed')
             ->where(function ($query) use ($checkIn, $checkOut) {
                 $query->whereBetween('check_in', [$checkIn, $checkOut])
@@ -105,10 +112,13 @@ class BookingController extends Controller
                             ->where('check_out', '>=', $checkOut);
                     });
             })
-            ->count();
+            ->pluck('room_number')
+            ->toArray();
 
-        $maxRooms = 50; // 50 rooms per type
-        $availableRooms = $maxRooms - $occupiedRooms;
+        $availableRooms = Room::where('room_type', $validated['room_type'])
+            ->whereNotIn('room_number', $bookedRooms)
+            ->where('room_status', 'available')
+            ->count();
 
         if ($validated['rooms'] > $availableRooms) {
             return back()->withErrors([
@@ -122,7 +132,6 @@ class BookingController extends Controller
             ]);
         }
 
-        // Pass all the validated data to the GuestInformation page
         return Inertia::render('GuestInformation', [
             'booking_data' => [
                 'check_in' => $validated['check_in'],

@@ -26,6 +26,8 @@
         "@fortawesome/free-brands-svg-icons": "^6.7.2",
         "@fortawesome/free-solid-svg-icons": "^6.7.2",
         "@fortawesome/react-fontawesome": "^0.2.2",
-        "sweetalert2": "^11.15.10"
+        "react-toastify": "^11.0.3",
+        "sweetalert2": "^11.15.10",
+        "sweetalert2-react-content": "^5.1.0"
     }
 }

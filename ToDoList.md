@@ -53,3 +53,15 @@
 
 1. Run in the terminal:
     php artisan migrate:fresh //[Note]: Dropping and then migrating of tables.
+
+
+-----------------------------------------------------
+# January 27, 2025 (Update)
+
+1. Run in the terminal:
+    php artisan migrate:fresh
+    php artisan db:seed
+
+    log in (para di na need magregister pa):
+    admin@example.com
+    password
