@@ -39,6 +39,7 @@ Route::middleware(['auth'])->group(function () {
     // Booking management routes
     Route::delete('/bookings/{booking}', [BookingController::class, 'destroy'])->name('bookings.destroy');
     Route::put('/bookings/{booking}/status', [BookingController::class, 'updateStatus'])->name('bookings.update.status');
+    Route::put('/bookings/{booking}/checkout', [BookingController::class, 'updateCheckout'])->name('bookings.update.checkout');
 
     // Profile routes
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

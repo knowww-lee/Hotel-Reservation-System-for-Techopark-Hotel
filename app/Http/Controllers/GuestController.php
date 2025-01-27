@@ -17,14 +17,15 @@ class GuestController extends Controller
 
             $today = Carbon::today();
             $viewCheckouts = $request->boolean('checkouts', false);
-            $viewCancelled = $request->boolean('cancelled', false); // Added for cancelled bookings view
+            $viewCancelled = $request->boolean('cancelled', false);
 
             $query = Booking::select('id', 'name', 'email', 'phone', 'check_in', 'check_out', 'room_type', 'room_number', 'status')
-                ->whereIn('status', ['confirmed', 'cancelled']); 
+                ->whereIn('status', ['confirmed', 'cancelled', 'completed']); 
 
             if ($viewCheckouts) {
                 // Show only today's checkouts
                 $bookings = $query->whereDate('check_out', $today)
+                    ->where('status', 'confirmed')
                     ->orderBy('check_out', 'asc')
                     ->get();
             } elseif ($viewCancelled) {
@@ -33,8 +34,13 @@ class GuestController extends Controller
                     ->orderBy('created_at', 'desc')
                     ->get();
             } else {
-                // Show all active bookings
-                $bookings = $query->orderBy('created_at', 'desc')
+                // Show only active bookings (not completed, not cancelled)
+                $bookings = $query->where('status', 'confirmed')
+                    ->where(function($q) use ($today) {
+                        $q->whereDate('check_out', '>', $today)
+                          ->orWhereNull('check_out');
+                    })
+                    ->orderBy('created_at', 'desc')
                     ->get();
             }
 

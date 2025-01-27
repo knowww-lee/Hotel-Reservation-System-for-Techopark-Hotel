@@ -49,6 +49,7 @@ export default function Guest({ bookings = [], todayCheckoutCount = 0, viewingCh
     const statusClasses = {
         confirmed: "bg-[#E7F8F0] text-[#41C588]",
         cancelled: "bg-[#FEECEB] text-[#F36960]",
+        completed: "bg-[#E2E8F0] text-[#64748B]",
         pending: "bg-[#FFF4E5] text-[#F8B008]"
     };
 
@@ -111,6 +112,43 @@ export default function Guest({ bookings = [], todayCheckoutCount = 0, viewingCh
                         Swal.fire(
                             'Updated!',
                             `Booking status changed to ${newStatus}.`,
+                            'success'
+                        );
+                    },
+                });
+            }
+        });
+    };
+
+    const handleCheckoutUpdate = (bookingId, currentCheckout) => {
+        setOpenMenuId(null); // Close dropdown
+        
+        Swal.fire({
+            title: 'Update Check-out Date',
+            html: `
+                <input type="date" id="checkout-date" class="swal2-input" value="${currentCheckout}">
+            `,
+            text: 'Setting today\'s date will mark the booking as completed and make the room available.',
+            showCancelButton: true,
+            confirmButtonColor: '#024635',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Update',
+            preConfirm: () => {
+                const newDate = document.getElementById('checkout-date').value;
+                if (!newDate) {
+                    Swal.showValidationMessage('Please select a date');
+                }
+                return newDate;
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                router.put(`/bookings/${bookingId}/checkout`, {
+                    check_out: result.value
+                }, {
+                    onSuccess: () => {
+                        Swal.fire(
+                            'Updated!',
+                            'Check-out date has been updated.',
                             'success'
                         );
                     },
@@ -231,6 +269,12 @@ export default function Guest({ bookings = [], todayCheckoutCount = 0, viewingCh
                                                                 className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                                                             >
                                                                 {booking.status === 'confirmed' ? 'Cancel Booking' : 'Confirm Booking'}
+                                                            </button>
+                                                            <button
+                                                                onClick={() => handleCheckoutUpdate(booking.id, booking.check_out)}
+                                                                className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                                            >
+                                                                Update Check-out
                                                             </button>
                                                             <button
                                                                 onClick={() => handleDelete(booking.id)}
