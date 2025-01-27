@@ -73,11 +73,18 @@ export default function Register() {
     });
 
     const handleInputChange = (field, value) => {
-        // Remove spaces from email and password fields
-        if (field === 'email' || field === 'password' || field === 'password_confirmation') {
-            value = value.replace(/\s/g, '');
+        let processedValue = value;
+        
+        // For name field, only allow letters and spaces
+        if (field === 'name') {
+            processedValue = value.replace(/[^a-zA-Z\s]/g, '');
         }
-        setData(field, value);
+        // Remove spaces from email and password fields
+        else if (field === 'email' || field === 'password' || field === 'password_confirmation') {
+            processedValue = value.replace(/\s/g, '');
+        }
+        
+        setData(field, processedValue);
     };
 
     const validateEmail = (email) => {
@@ -240,11 +247,12 @@ export default function Register() {
                                 className="mt-1 block w-full placeholder-small"
                                 autoComplete="name"
                                 isFocused={true}
-                                onChange={(e) => setData('name', e.target.value)}
+                                onChange={(e) => handleInputChange('name', e.target.value)}
                                 required
                             />
 
                             <InputError message={errors.name} className="mt-2" />
+                            <p className="text-xs text-gray-500 mt-1">Only letters are allowed in the name field</p>
                         </div>
 
                         <div className="mt-4">
