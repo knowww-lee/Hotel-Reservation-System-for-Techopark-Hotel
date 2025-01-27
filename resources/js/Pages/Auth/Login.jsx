@@ -84,6 +84,11 @@ export default function Login({ status, canResetPassword }) {
         post(route('login'), {
             onSuccess: () => {
                 setFormDirty(false);
+                // If remember is false, clear the form data from browser storage
+                if (!data.remember) {
+                    localStorage.removeItem('login_email');
+                    sessionStorage.removeItem('login_email');
+                }
                 Swal.fire({
                     title: 'Success!',
                     text: 'Successfully logged in!',
@@ -146,7 +151,7 @@ export default function Login({ status, canResetPassword }) {
                                 placeholder="Enter your email"
                                 value={data.email}
                                 className="mt-1 block w-full placeholder-small"
-                                autoComplete="username"
+                                autoComplete={data.remember ? "username" : "off"}
                                 isFocused={true}
                                 onChange={(e) => handleInputChange('email', e.target.value)}
                             />
@@ -167,7 +172,7 @@ export default function Login({ status, canResetPassword }) {
                                     placeholder="Enter your password"
                                     value={data.password}
                                     className="mt-1 block w-full placeholder-small"
-                                    autoComplete="current-password"
+                                    autoComplete={data.remember ? "current-password" : "off"}
                                     onChange={(e) => handleInputChange('password', e.target.value)}
                                 />
                             </div>
