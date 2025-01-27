@@ -16,7 +16,7 @@ class RoomsController extends Controller
             // Organize rooms into normal and luxury types
             $normalRooms = $rooms->filter(fn($room) => $room->room_type === 'normal')->map(function ($room) {
 
-                $bookingStatus = $room->room_status === 'booked' ? ($room->booking?->status === 'cancelled' ? 'Available' : 'Booked') : 'Available';
+                $bookingStatus = $room->room_status === 'booked' && $room->booking && $room->booking->status !== 'cancelled' ? 'Booked' : 'Available';
 
                 return [
                     'number' => $room->room_number,
@@ -31,7 +31,7 @@ class RoomsController extends Controller
             })->toArray();
 
             $luxuryRooms = $rooms->filter(fn($room) => $room->room_type === 'luxury')->map(function ($room) {
-                $bookingStatus = $room->room_status === 'booked' ? ($room->booking?->status === 'cancelled' ? 'Available' : 'Booked') : 'Available';
+                $bookingStatus = $room->room_status === 'booked' && $room->booking && $room->booking->status !== 'cancelled' ? 'Booked' : 'Available';
 
                 return [
                     'number' => $room->room_number,

@@ -1,5 +1,5 @@
 import { Head, router } from '@inertiajs/react';
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Swal from 'sweetalert2';
 import AdminDashboard from "../Layouts/AdminDashboard";
 
@@ -10,19 +10,18 @@ export default function Guest({ bookings = [], todayCheckoutCount = 0, viewingCh
 
     const [search, setSearch] = useState("");
     const [openMenuId, setOpenMenuId] = useState(null);
-    const dropdownRef = useRef(null);
 
     // Close dropdown when clicking outside
     useEffect(() => {
         function handleClickOutside(event) {
-            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+            if (openMenuId && !event.target.closest(`#dropdown-${openMenuId}`)) {
                 setOpenMenuId(null);
             }
         }
 
         document.addEventListener("mousedown", handleClickOutside);
         return () => document.removeEventListener("mousedown", handleClickOutside);
-    }, []);
+    }, [openMenuId]);
 
     const handleViewChange = (viewCheckouts, viewCancelled) => {
         router.get('/guest', { checkouts: viewCheckouts, cancelled: viewCancelled }, {
@@ -45,6 +44,8 @@ export default function Guest({ bookings = [], todayCheckoutCount = 0, viewingCh
     if (!viewingCancelled) {
         filteredBookings = filteredBookings.filter(booking => booking.status !== 'cancelled');
     }
+
+    filteredBookings.sort((a, b) => a.id - b.id);
 
     const statusClasses = {
         confirmed: "bg-[#E7F8F0] text-[#41C588]",
@@ -241,7 +242,7 @@ export default function Guest({ bookings = [], todayCheckoutCount = 0, viewingCh
                                             </span>
                                         </td>
                                         <td className="px-4 py-2 text-center"> 
-                                            <div className="relative" ref={dropdownRef}>
+                                            <div className="relative" id={`dropdown-${booking.id}`}>
                                                 <button 
                                                     onClick={() => toggleDropdown(booking.id)}
                                                     className="text-gray-500 hover:text-gray-700 focus:outline-none"
