@@ -4,7 +4,7 @@ import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import { Head, Link, useForm } from '@inertiajs/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
@@ -17,11 +17,58 @@ export default function Login({ status, canResetPassword }) {
         remember: false,
     });
 
+    const [formDirty, setFormDirty] = useState(false);
+
+    useEffect(() => {
+        const handleBeforeUnload = (e) => {
+            if (formDirty) {
+                e.preventDefault();
+                e.returnValue = '';
+            }
+        };
+
+        const handleUnload = async (e) => {
+            if (formDirty) {
+                e.preventDefault();
+                const result = await Swal.fire({
+                    title: 'Are you sure?',
+                    text: 'You will lose all entered data if you reload the page.',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#024635',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, reload',
+                    cancelButtonText: 'Cancel'
+                });
+
+                if (!result.isConfirmed) {
+                    e.preventDefault();
+                }
+            }
+        };
+
+        window.addEventListener('beforeunload', handleBeforeUnload);
+        window.addEventListener('unload', handleUnload);
+
+        return () => {
+            window.removeEventListener('beforeunload', handleBeforeUnload);
+            window.removeEventListener('unload', handleUnload);
+        };
+    }, [formDirty]);
+
+    // Update formDirty when any field changes
+    useEffect(() => {
+        if (data.email || data.password) {
+            setFormDirty(true);
+        }
+    }, [data]);
+
     const submit = (e) => {
         e.preventDefault();
 
         post(route('login'), {
             onSuccess: () => {
+                setFormDirty(false);
                 Swal.fire({
                     title: 'Success!',
                     text: 'Successfully logged in!',

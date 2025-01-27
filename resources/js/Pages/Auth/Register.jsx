@@ -14,6 +14,52 @@ export default function Register() {
         password_confirmation: '',
     });
 
+    const [formDirty, setFormDirty] = useState(false);
+
+    useEffect(() => {
+        const handleBeforeUnload = (e) => {
+            if (formDirty) {
+                e.preventDefault();
+                e.returnValue = '';
+            }
+        };
+
+        const handleUnload = async (e) => {
+            if (formDirty) {
+                e.preventDefault();
+                const result = await Swal.fire({
+                    title: 'Are you sure?',
+                    text: 'You will lose all entered data if you reload the page.',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#024635',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, reload',
+                    cancelButtonText: 'Cancel'
+                });
+
+                if (!result.isConfirmed) {
+                    e.preventDefault();
+                }
+            }
+        };
+
+        window.addEventListener('beforeunload', handleBeforeUnload);
+        window.addEventListener('unload', handleUnload);
+
+        return () => {
+            window.removeEventListener('beforeunload', handleBeforeUnload);
+            window.removeEventListener('unload', handleUnload);
+        };
+    }, [formDirty]);
+
+    // Update formDirty when any field changes
+    useEffect(() => {
+        if (data.name || data.email || data.password || data.password_confirmation) {
+            setFormDirty(true);
+        }
+    }, [data]);
+
     const [passwordRequirements, setPasswordRequirements] = useState({
         uppercase: false,
         lowercase: false,
@@ -101,6 +147,7 @@ export default function Register() {
 
         post(route('register'), {
             onSuccess: () => {
+                setFormDirty(false);
                 Swal.fire({
                     title: 'Success!',
                     text: 'Registration successful!',
