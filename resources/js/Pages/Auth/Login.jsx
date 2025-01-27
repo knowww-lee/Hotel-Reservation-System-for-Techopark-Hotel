@@ -7,9 +7,6 @@ import { Head, Link, useForm } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 
-import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
 export default function Login({ status, canResetPassword }) {
     const { data, setData, post, processing, errors, reset } = useForm({
         email: '',
@@ -90,13 +87,6 @@ export default function Login({ status, canResetPassword }) {
         });
     };
 
-    //Password visibility
-    const [showPassword, setShowPassword] = useState(false);
-
-    const togglePasswordVisibility = () => {
-        setShowPassword(!showPassword);
-    };
-
     return (
         <>
             <Head title="Log in" />
@@ -154,7 +144,7 @@ export default function Login({ status, canResetPassword }) {
                             <div className="relative">
                                 <TextInput
                                     id="password"
-                                    type={showPassword ? 'text' : 'password'} 
+                                    type="password"
                                     name="password"
                                     placeholder="Enter your password"
                                     value={data.password}
@@ -162,14 +152,6 @@ export default function Login({ status, canResetPassword }) {
                                     autoComplete="current-password"
                                     onChange={(e) => setData('password', e.target.value)}
                                 />
-
-                                <button
-                                    type="button"
-                                    className="absolute right-3 top-3 text-gray-600"
-                                    onClick={togglePasswordVisibility}
-                                >
-                                    <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
-                                </button>
                             </div>
 
                             <InputError message={errors.password} className="mt-2" />
