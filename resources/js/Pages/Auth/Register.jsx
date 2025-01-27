@@ -1,10 +1,12 @@
+import { Head, Link, useForm } from '@inertiajs/react';
+import { useEffect, useState } from 'react';
+import Swal from 'sweetalert2';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
-import { Head, Link, useForm } from '@inertiajs/react';
-import { useEffect, useState } from 'react';
-import Swal from 'sweetalert2';
 
 export default function Register() {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -185,8 +187,9 @@ export default function Register() {
                     icon: 'success',
                     timer: 1500,
                     showConfirmButton: false
+                }).then(() => {
+                    window.location.href = route('register'); 
                 });
-                reset('password', 'password_confirmation');
             },
             onError: (errors) => {
                 const errorMessage = Object.values(errors)[0];
@@ -204,8 +207,16 @@ export default function Register() {
         <>
             <Head title="Register" />
 
+            {/*Back to Dashboard link*/}
+            <div className="absolute top-4 left-4">
+                <Link href={route('dashboard')} className="text-sm text-green-900 hover:text-green-700 flex items-center">
+                    <FontAwesomeIcon icon={faArrowLeft} className="mr-2" />
+                    Back to Dashboard
+                </Link>
+            </div>
+
             {/*Sign Up form */}
-            <div className="flex h-screen bg-gradient-to-l from-[#FFFFFF] to-[#84AAAC]">
+            <div className="flex min-h-screen bg-gradient-to-l from-[#FFFFFF] to-[#84AAAC]">
                 <div className="w-1/2 flex flex-col items-center justify-center p-8">
                     <h2 className="text-3xl font-bold text-[#024635] text-center mb-2">
                         Sign Up
@@ -329,20 +340,8 @@ export default function Register() {
                         <div className="w-full flex justify-center">
                             <PrimaryButton className="mt-4 w-full max-w-xs text-center" 
                             disabled={processing}>
-                                    Sign Up
+                                    Register
                             </PrimaryButton>
-                        </div>
-
-                        <div className="mt-4 flex flex-col items-center justify-center">
-                            <span className="text-sm text-gray-600">
-                                Already got an account?{' '}
-                                <Link
-                                    href={route('login')}
-                                    className="text-red-600 font-bold hover:text-red-900"
-                                >
-                                    Sign In
-                                </Link>
-                            </span>
                         </div>
                     </form>
                 </div>

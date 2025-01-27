@@ -118,12 +118,6 @@ const HeaderLayout = ({ children, activeLink }) => {
                                             >
                                                 Login
                                             </Link>
-                                            <Link
-                                                href="/register"
-                                                className="block px-4 py-2 text-sm text-white hover:bg-[#F8B008] hover:bg-opacity-90"
-                                            >
-                                                Register
-                                            </Link>
                                         </>
                                     )}
                                 </div>

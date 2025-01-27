@@ -66,3 +66,7 @@
     log in (para di na need magregister pa):
     admin@example.com
     password
+
+2. Run in the terminal:
+    npm install @heroicons/react  
+    npm install --save react-toastify

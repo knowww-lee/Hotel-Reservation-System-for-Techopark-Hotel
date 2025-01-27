@@ -3,6 +3,8 @@ import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { router, usePage } from '@inertiajs/react';
 import { useState } from 'react';
 import Swal from 'sweetalert2';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUser, faUserPlus, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 
 export default function DashboardHeader() {
     const user = usePage().props.auth.user;
@@ -58,12 +60,18 @@ export default function DashboardHeader() {
 
                         <Dropdown.Content>
                             <Dropdown.Link href={route('profile.edit')}>
+                                <FontAwesomeIcon icon={faUser} className="mr-2" />
                                 Profile
+                            </Dropdown.Link>
+                            <Dropdown.Link href={route('register')}>
+                                <FontAwesomeIcon icon={faUserPlus} className="mr-2" />
+                                Register an Account
                             </Dropdown.Link>
                             <button
                                 className="w-full text-left block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out"
                                 onClick={handleLogout}
                             >
+                                <FontAwesomeIcon icon={faSignOutAlt} className="mr-2" />
                                 Log Out
                             </button>
                         </Dropdown.Content>
@@ -140,6 +148,9 @@ export default function DashboardHeader() {
                     <div className="mt-3 space-y-1">
                         <ResponsiveNavLink href={route('profile.edit')}>
                             Profile
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink href={route('register')}>
+                            Register
                         </ResponsiveNavLink>
                         <button
                             className="w-full text-left block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out"
