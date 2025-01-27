@@ -15,6 +15,95 @@ export default function Login({ status, canResetPassword }) {
     });
 
     const [formDirty, setFormDirty] = useState(false);
+    const [loginAttempts, setLoginAttempts] = useState(0);
+    const [isLocked, setIsLocked] = useState(false);
+    const [lockoutEndTime, setLockoutEndTime] = useState(null);
+
+    useEffect(() => {
+        const storedLockoutEnd = localStorage.getItem('loginLockoutEnd');
+        if (storedLockoutEnd) {
+            const endTime = parseInt(storedLockoutEnd);
+            if (endTime > Date.now()) {
+                setIsLocked(true);
+                setLockoutEndTime(endTime);
+            } else {
+                localStorage.removeItem('loginLockoutEnd');
+                localStorage.removeItem('loginAttempts');
+            }
+        }
+
+        const storedAttempts = localStorage.getItem('loginAttempts');
+        if (storedAttempts) {
+            setLoginAttempts(parseInt(storedAttempts));
+        }
+    }, []);
+
+    useEffect(() => {
+        let timer;
+        if (isLocked && lockoutEndTime) {
+            timer = setInterval(() => {
+                if (Date.now() >= lockoutEndTime) {
+                    setIsLocked(false);
+                    setLockoutEndTime(null);
+                    setLoginAttempts(0);
+                    localStorage.removeItem('loginLockoutEnd');
+                    localStorage.removeItem('loginAttempts');
+                }
+            }, 1000);
+        }
+        return () => clearInterval(timer);
+    }, [isLocked, lockoutEndTime]);
+
+    const startLockout = () => {
+        const lockoutDuration = 5 * 60 * 1000; // 5 minutes
+        const endTime = Date.now() + lockoutDuration;
+        setIsLocked(true);
+        setLockoutEndTime(endTime);
+        localStorage.setItem('loginLockoutEnd', endTime.toString());
+    };
+
+    const handleSecurityQuestion = async () => {
+        const { value: name } = await Swal.fire({
+            title: 'Security Question',
+            text: 'Please enter your registered name for verification:',
+            input: 'text',
+            inputPlaceholder: 'Enter your name',
+            showCancelButton: true,
+            confirmButtonColor: '#84AAAC',
+            cancelButtonColor: '#d33',
+            inputValidator: (value) => {
+                if (!value) return 'You need to enter your name!';
+            }
+        });
+
+        if (name) {
+            post(route('login.verify-name'), {
+                name,
+                email: data.email
+            }, {
+                onSuccess: () => {
+                    setLoginAttempts(0);
+                    localStorage.removeItem('loginAttempts');
+                    Swal.fire({
+                        title: 'Success!',
+                        text: 'Name verified. You can now try logging in again.',
+                        icon: 'success',
+                        timer: 1500,
+                        showConfirmButton: false,
+                    });
+                },
+                onError: () => {
+                    startLockout();
+                    Swal.fire({
+                        title: 'Error!',
+                        text: 'Incorrect name. You are now locked out for 5 minutes.',
+                        icon: 'error',
+                        confirmButtonColor: '#84AAAC',
+                    });
+                }
+            });
+        }
+    };
 
     const handleInputChange = (field, value) => {
         // Remove spaces from email and password fields
@@ -24,51 +113,22 @@ export default function Login({ status, canResetPassword }) {
         setData(field, value);
     };
 
-    useEffect(() => {
-        const handleBeforeUnload = (e) => {
-            if (formDirty) {
-                e.preventDefault();
-                e.returnValue = '';
-            }
-        };
-
-        const handleUnload = async (e) => {
-            if (formDirty) {
-                e.preventDefault();
-                const result = await Swal.fire({
-                    title: 'Are you sure?',
-                    text: 'You will lose all entered data if you reload the page.',
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#024635',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, reload',
-                    cancelButtonText: 'Cancel'
-                });
-
-                if (!result.isConfirmed) {
-                    e.preventDefault();
-                }
-            }
-        };
-
-        window.addEventListener('beforeunload', handleBeforeUnload);
-        window.addEventListener('unload', handleUnload);
-
-        return () => {
-            window.removeEventListener('beforeunload', handleBeforeUnload);
-            window.removeEventListener('unload', handleUnload);
-        };
-    }, [formDirty]);
-
-    // Update formDirty when any field changes
-    useEffect(() => {
-        const hasInput = Boolean(data.email.trim() || data.password);
-        setFormDirty(hasInput);
-    }, [data]);
-
     const submit = (e) => {
         e.preventDefault();
+
+        if (isLocked) {
+            const remainingTime = Math.ceil((lockoutEndTime - Date.now()) / 1000);
+            const minutes = Math.floor(remainingTime / 60);
+            const seconds = remainingTime % 60;
+            
+            Swal.fire({
+                title: 'Account Locked',
+                text: `Please wait ${minutes}:${seconds.toString().padStart(2, '0')} before trying again.`,
+                icon: 'warning',
+                confirmButtonColor: '#84AAAC',
+            });
+            return;
+        }
 
         // Validate no spaces
         if (data.email.includes(' ') || data.password.includes(' ')) {
@@ -84,7 +144,8 @@ export default function Login({ status, canResetPassword }) {
         post(route('login'), {
             onSuccess: () => {
                 setFormDirty(false);
-                // If remember is false, clear the form data from browser storage
+                setLoginAttempts(0);
+                localStorage.removeItem('loginAttempts');
                 if (!data.remember) {
                     localStorage.removeItem('login_email');
                     sessionStorage.removeItem('login_email');
@@ -98,13 +159,29 @@ export default function Login({ status, canResetPassword }) {
                 });
             },
             onError: () => {
-                Swal.fire({
-                    title: 'Error!',
-                    text: 'Invalid credentials. Please try again.',
-                    icon: 'error',
-                    confirmButtonText: 'OK',
-                    confirmButtonColor: '#84AAAC',
-                });
+                const newAttempts = loginAttempts + 1;
+                setLoginAttempts(newAttempts);
+                localStorage.setItem('loginAttempts', newAttempts.toString());
+
+                if (newAttempts === 3) {
+                    handleSecurityQuestion();
+                } else if (newAttempts > 3) {
+                    startLockout();
+                    Swal.fire({
+                        title: 'Account Locked',
+                        text: 'Too many failed attempts. Please wait 5 minutes before trying again.',
+                        icon: 'error',
+                        confirmButtonColor: '#84AAAC',
+                    });
+                } else {
+                    Swal.fire({
+                        title: 'Error!',
+                        text: `Invalid credentials. ${3 - newAttempts} attempts remaining.`,
+                        icon: 'error',
+                        confirmButtonText: 'OK',
+                        confirmButtonColor: '#84AAAC',
+                    });
+                }
             },
             onFinish: () => reset('password'),
         });
