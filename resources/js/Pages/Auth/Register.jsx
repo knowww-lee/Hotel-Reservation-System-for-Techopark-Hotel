@@ -3,6 +3,7 @@ import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import { Head, Link, useForm } from '@inertiajs/react';
+import { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 
 export default function Register() {
@@ -11,6 +12,14 @@ export default function Register() {
         email: '',
         password: '',
         password_confirmation: '',
+    });
+
+    const [passwordRequirements, setPasswordRequirements] = useState({
+        uppercase: false,
+        lowercase: false,
+        number: false,
+        special: false,
+        length: false
     });
 
     const validateEmail = (email) => {
@@ -25,6 +34,14 @@ export default function Register() {
         const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
         const isLongEnough = password.length >= 8;
 
+        setPasswordRequirements({
+            uppercase: hasUpperCase,
+            lowercase: hasLowerCase,
+            number: hasNumbers,
+            special: hasSpecialChar,
+            length: isLongEnough
+        });
+
         return {
             isValid: hasUpperCase && hasLowerCase && hasNumbers && hasSpecialChar && isLongEnough,
             errors: {
@@ -36,6 +53,10 @@ export default function Register() {
             }
         };
     };
+
+    useEffect(() => {
+        validatePassword(data.password);
+    }, [data.password]);
 
     const submit = (e) => {
         e.preventDefault();
@@ -175,14 +196,24 @@ export default function Register() {
                             </div>
 
                             <InputError message={errors.password} className="mt-2" />
-                            <div className="text-xs text-gray-500 mt-1">
-                                Password must contain:
-                                <ul className="list-disc list-inside">
-                                    <li>At least 8 characters</li>
-                                    <li>At least one uppercase letter</li>
-                                    <li>At least one lowercase letter</li>
-                                    <li>At least one number</li>
-                                    <li>At least one special character {'(!@#$%^&*(),.?":{}|<>)'}</li>
+                            <div className="text-xs text-gray-700 mt-2 bg-white p-3 rounded-lg shadow-sm">
+                                Password requirements:
+                                <ul className="mt-1 space-y-1">
+                                    <li className={`flex items-center ${passwordRequirements.length ? 'text-green-600' : 'text-red-600'}`}>
+                                        {passwordRequirements.length ? '✓' : '✗'} At least 8 characters
+                                    </li>
+                                    <li className={`flex items-center ${passwordRequirements.uppercase ? 'text-green-600' : 'text-red-600'}`}>
+                                        {passwordRequirements.uppercase ? '✓' : '✗'} At least one uppercase letter
+                                    </li>
+                                    <li className={`flex items-center ${passwordRequirements.lowercase ? 'text-green-600' : 'text-red-600'}`}>
+                                        {passwordRequirements.lowercase ? '✓' : '✗'} At least one lowercase letter
+                                    </li>
+                                    <li className={`flex items-center ${passwordRequirements.number ? 'text-green-600' : 'text-red-600'}`}>
+                                        {passwordRequirements.number ? '✓' : '✗'} At least one number
+                                    </li>
+                                    <li className={`flex items-center ${passwordRequirements.special ? 'text-green-600' : 'text-red-600'}`}>
+                                        {passwordRequirements.special ? '✓' : '✗'} At least one special character (!@#$%^&*(),.?":{}|&lt;&gt;)
+                                    </li>
                                 </ul>
                             </div>
                         </div>
