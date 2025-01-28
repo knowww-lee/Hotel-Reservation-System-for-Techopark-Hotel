@@ -159,132 +159,142 @@ export default function Room({ auth, check_in, check_out, room_type }) {
 
                 <div className="p-6 bg-gray-100 min-h-screen">
                     <div className="container mx-auto">
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                            <div className="md:col-span-2">
-                                <img
-                                    src={room_type === 'luxury' ? 'services-resources/luxury-room.png' : 'services-resources/deluxe-room.png'}
-                                    alt={room_type === 'luxury' ? 'Luxury Room' : 'Normal Room'}
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                            <div className="md:col-span-1">
+                            <img
+                                    src={data.room_type === 'luxury' 
+                                        ? '/services-resources/luxury-room.jpg' 
+                                        : '/services-resources/normal-room.jpg'}
+                                    alt={data.room_type === 'luxury' 
+                                        ? 'Luxury Room' 
+                                        : 'Normal Room'}
                                     className="rounded-lg shadow-md w-full"
                                 />
                             </div>
 
-                            <div className="bg-[#EDC76D] p-6 shadow-md">
+                            <div className="bg-[#EDC76D] p-6 shadow-md w-full md:col-span-1">
                                 <h2 className="text-lg font-bold mb-4">Guest Information</h2>
                                 <form onSubmit={handleSubmit} className="space-y-4">
                                     <div className="mt-4 space-y-4">
-                                        <div>
-                                            <h3 className="text-lg font-semibold mb-2">Booking Details:</h3>
-                                            <div className="space-y-4">
-                                                <div>
-                                                    <label className="block text-sm font-medium mb-1" htmlFor="check_in">
-                                                        Check-in Date
-                                                    </label>
-                                                    <input
-                                                        type="date"
-                                                        id="check_in"
-                                                        value={data.check_in}
-                                                        onChange={e => handleDateChange('check_in', e.target.value)}
-                                                        className="w-full px-3 py-2 border rounded-md bg-[#024635] text-white focus:outline-none focus:ring-2 focus:ring-green-500"
-                                                        required
-                                                    />
-                                                </div>
-                                                <div>
-                                                    <label className="block text-sm font-medium mb-1" htmlFor="check_out">
-                                                        Check-out Date
-                                                    </label>
-                                                    <input
-                                                        type="date"
-                                                        id="check_out"
-                                                        value={data.check_out}
-                                                        onChange={e => handleDateChange('check_out', e.target.value)}
-                                                        min={data.check_in}
-                                                        className="w-full px-3 py-2 border rounded-md bg-[#024635] text-white focus:outline-none focus:ring-2 focus:ring-green-500"
-                                                        required
-                                                    />
-                                                </div>
-                                                <div>
-                                                    <label className="block text-sm font-medium mb-1" htmlFor="room_type">
-                                                        Room Type
-                                                    </label>
-                                                    <select
-                                                        id="room_type"
-                                                        value={data.room_type}
-                                                        onChange={e => setData('room_type', e.target.value)}
-                                                        className="w-full px-3 py-2 border rounded-md bg-[#024635] text-white focus:outline-none focus:ring-2 focus:ring-green-500"
-                                                    >
-                                                        <option value="normal">Normal Room (₱100/night)</option>
-                                                        <option value="luxury">Luxury Room (₱200/night)</option>
-                                                    </select>
-                                                </div>
+                                    <div>
+                                        <h3 className="text-lg font-semibold mb-2">Booking Details:</h3>
+                                        <div className="space-y-4">
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                            <div>
+                                            <label className="block text-sm font-medium mb-1" htmlFor="check_in">
+                                                Check-in Date
+                                            </label>
+                                            <input
+                                                type="date"
+                                                id="check_in"
+                                                value={data.check_in}
+                                                onChange={(e) => handleDateChange('check_in', e.target.value)}
+                                                className="w-full px-3 py-2 border rounded-md bg-[#024635] text-white focus:outline-none focus:ring-2 focus:ring-green-500"
+                                                required
+                                            />
+                                            </div>
+                                            <div>
+                                            <label className="block text-sm font-medium mb-1" htmlFor="check_out">
+                                                Check-out Date
+                                            </label>
+                                            <input
+                                                type="date"
+                                                id="check_out"
+                                                value={data.check_out}
+                                                onChange={(e) => handleDateChange('check_out', e.target.value)}
+                                                min={data.check_in}
+                                                className="w-full px-3 py-2 border rounded-md bg-[#024635] text-white focus:outline-none focus:ring-2 focus:ring-green-500"
+                                                required
+                                            />
                                             </div>
                                         </div>
-
                                         <div>
-                                            <label className="block text-sm font-medium mb-1" htmlFor="name">
-                                                Full Name
+                                            <label className="block text-sm font-medium mb-1" htmlFor="room_type">
+                                            Room Type
                                             </label>
-                                            <input
-                                                type="text"
-                                                id="name"
-                                                value={data.name}
-                                                onChange={e => setData('name', e.target.value)}
-                                                className="w-full px-3 py-2 border rounded-md bg-[#024635] text-white focus:outline-none focus:ring-2 focus:ring-green-500"
-                                                required
-                                            />
+                                            <select
+                                            id="room_type"
+                                            value={data.room_type}
+                                            onChange={(e) => setData('room_type', e.target.value)}
+                                            className="w-full px-3 py-2 border rounded-md bg-[#024635] text-white focus:outline-none focus:ring-2 focus:ring-green-500"
+                                            >
+                                            <option value="normal">Normal Room (₱100/night)</option>
+                                            <option value="luxury">Luxury Room (₱200/night)</option>
+                                            </select>
                                         </div>
-
-                                        <div>
-                                            <label className="block text-sm font-medium mb-1" htmlFor="email">
-                                                Email Address
-                                            </label>
-                                            <input
-                                                type="email"
-                                                id="email"
-                                                value={data.email}
-                                                onChange={e => setData('email', e.target.value)}
-                                                className="w-full px-3 py-2 border rounded-md bg-[#024635] text-white focus:outline-none focus:ring-2 focus:ring-green-500"
-                                                required
-                                            />
-                                        </div>
-
-                                        <div>
-                                            <label className="block text-sm font-medium mb-1" htmlFor="phone">
-                                                Phone Number
-                                            </label>
-                                            <input
-                                                type="tel"
-                                                id="phone"
-                                                value={data.phone}
-                                                onChange={e => setData('phone', e.target.value)}
-                                                className="w-full px-3 py-2 border rounded-md bg-[#024635] text-white focus:outline-none focus:ring-2 focus:ring-green-500"
-                                                required
-                                            />
-                                        </div>
-
-                                        <div>
-                                            <label className="block text-sm font-medium mb-1" htmlFor="special_requests">
-                                                Special Requests (Optional)
-                                            </label>
-                                            <textarea
-                                                id="special_requests"
-                                                value={data.special_requests}
-                                                onChange={e => setData('special_requests', e.target.value)}
-                                                className="w-full px-3 py-2 border rounded-md bg-[#024635] text-white focus:outline-none focus:ring-2 focus:ring-green-500"
-                                                rows="4"
-                                            />
                                         </div>
                                     </div>
 
+                                    <div>
+                                        <label className="block text-sm font-medium mb-1" htmlFor="name">
+                                        Full Name
+                                        </label>
+                                        <input
+                                        type="text"
+                                        id="name"
+                                        value={data.name}
+                                        onChange={(e) => setData('name', e.target.value)}
+                                        className="w-full px-3 py-2 border rounded-md bg-[#024635] text-white focus:outline-none focus:ring-2 focus:ring-green-500"
+                                        required
+                                        />
+                                    </div>
+
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div>
+                                        <label className="block text-sm font-medium mb-1" htmlFor="email">
+                                            Email Address
+                                        </label>
+                                        <input
+                                            type="email"
+                                            id="email"
+                                            value={data.email}
+                                            onChange={(e) => setData('email', e.target.value)}
+                                            className="w-full px-3 py-2 border rounded-md bg-[#024635] text-white focus:outline-none focus:ring-2 focus:ring-green-500"
+                                            required
+                                        />
+                                        </div>
+                                        <div>
+                                        <label className="block text-sm font-medium mb-1" htmlFor="phone">
+                                            Phone Number (09xxxxxxxxx)
+                                        </label>
+                                        <input
+                                            type="tel"
+                                            id="phone"
+                                            pattern="09[0-9]{9}"
+                                            maxLength="11"
+                                            value={data.phone}
+                                            onChange={(e) => setData('phone', e.target.value)}
+                                            className="w-full px-3 py-2 border rounded-md bg-[#024635] text-white focus:outline-none focus:ring-2 focus:ring-green-500"
+                                            required
+                                        />
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <label className="block text-sm font-medium mb-1" htmlFor="special_requests">
+                                        Special Requests (Optional)
+                                        </label>
+                                        <textarea
+                                        id="special_requests"
+                                        value={data.special_requests}
+                                        onChange={(e) => setData('special_requests', e.target.value)}
+                                        className="w-full px-3 py-2 border rounded-md bg-[#024635] text-white focus:outline-none focus:ring-2 focus:ring-green-500"
+                                        rows="4"
+                                        />
+                                    </div>
+                                    </div>
+
                                     <button
-                                        type="submit"
-                                        disabled={processing}
-                                        className="w-full bg-white text-black py-2 rounded-md hover:bg-yellow-500 hover:text-white focus:outline-none focus:ring-2 focus:ring-yellow-500 disabled:opacity-50"
+                                    type="submit"
+                                    disabled={processing}
+                                    className="w-full bg-white text-black py-2 rounded-md hover:bg-yellow-500 hover:text-white focus:outline-none focus:ring-2 focus:ring-yellow-500 disabled:opacity-50"
                                     >
-                                        {processing ? 'Processing...' : 'CONFIRM BOOKING'}
+                                    {processing ? 'Processing...' : 'CONFIRM BOOKING'}
                                     </button>
                                 </form>
+                                </div>
+
                             </div>
-                        </div>
 
                         <div className="mt-10 grid grid-cols-1 md:grid-cols-3 gap-6">
                             <div className="md:col-span-2">

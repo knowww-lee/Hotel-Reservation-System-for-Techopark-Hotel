@@ -14,8 +14,11 @@ export default function Services() {
         message: ''
     });
 
-    const handleBookNow = () => {
-        router.visit(route('room'));
+    const handleBookNow = (e) => {
+        e.preventDefault();
+        router.visit(route('room'), {
+            preserveScroll: true
+        });
     };
 
     const handleSubmit = (e) => {
@@ -98,27 +101,21 @@ export default function Services() {
             </div>
 
             {/* Hotel's Facilities */}
-       
-                           {/* Hotel's Facilities */}
-                <div className="bg-[#E7E2D5] py-16 z-0 flex flex-col items-center justify-center"> 
-                <div className="mb-8"> 
-                    <img src="/logo-and-icons/Logo.png" alt="Logo" className="h-48" />
-                </div>
+    
 
                 {/* Book Now Button */}
-                <div className="flex flex-col items-center mb-8"> 
+                <div className="flex flex-col items-center mb-8 mt-4"> 
                     <button
-                        onClick={handleBookNow}
+                        onClick={(e) => handleBookNow(e)}
                         className="bg-[#024635] text-white px-8 py-3 rounded-lg hover:bg-[#023625] transition-colors duration-200 font-semibold text-lg shadow-lg"
                     >
                         BOOK NOW
                     </button>
                 </div>
 
-                </div>
-      
-             {/* Legend Section */}
 
+             {/* Legend Section */}
+            {/*
              <div className="flex flex-col space-y-4 p-20 ml-40">
                 <p className="text-2xl font-bold mb-8">LEGEND</p>
                 <div className="flex items-center space-x-4">
@@ -135,6 +132,8 @@ export default function Services() {
                     <span className="text-lg">Check-in Date</span>
                 </div>
             </div>
+            */}
+            
 
               {/* Rooms Section */}
               
