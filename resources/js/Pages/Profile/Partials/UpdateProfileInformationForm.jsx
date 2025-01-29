@@ -1,12 +1,11 @@
     import InputError from '@/Components/InputError';
-    import InputLabel from '@/Components/InputLabel';
-    import PrimaryButton from '@/Components/PrimaryButton';
-    import TextInput from '@/Components/TextInput';
-    import { Transition } from '@headlessui/react';
-    import { Link, useForm, usePage } from '@inertiajs/react';
-    import { CheckCircleIcon, ExclamationCircleIcon } from '@heroicons/react/24/solid';
-    import Swal from 'sweetalert2';
-    import { useEffect } from 'react';
+import InputLabel from '@/Components/InputLabel';
+import PrimaryButton from '@/Components/PrimaryButton';
+import TextInput from '@/Components/TextInput';
+import { CheckCircleIcon, ExclamationCircleIcon } from '@heroicons/react/24/solid';
+import { Link, useForm, usePage } from '@inertiajs/react';
+import { useEffect } from 'react';
+import Swal from 'sweetalert2';
 
     export default function UpdateProfileInformation({
     mustVerifyEmail,
@@ -21,8 +20,33 @@
         email: user.email,
         });
 
+    const validateEmail = (email) => {
+        if (email.includes(' ')) {
+            return false;
+        }
+        const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+        return emailRegex.test(email);
+    };
+
+    const handleEmailChange = (e) => {
+        const value = e.target.value.replace(/\s/g, ''); // Remove any spaces
+        setData('email', value);
+    };
+
     const submit = (e) => {
         e.preventDefault();
+
+        // Validate email before submission
+        if (!validateEmail(data.email)) {
+            Swal.fire({
+                title: 'Invalid Email',
+                text: 'Please enter a valid email address',
+                icon: 'error',
+                confirmButtonColor: '#024635'
+            });
+            return;
+        }
+
         patch(route('profile.update'), {
         onSuccess: () => {
             Swal.fire({
@@ -93,13 +117,21 @@
             <TextInput
                 id="email"
                 type="email"
-                className="mt-1 block w-full"
+                className={`mt-1 block w-full ${data.email && !validateEmail(data.email) ? 'border-red-500' : ''}`}
                 value={data.email}
-                onChange={(e) => setData('email', e.target.value)}
+                onChange={handleEmailChange}
                 required
                 autoComplete="username"
             />
             <InputError className="mt-2" message={errors.email} />
+            {data.email && !validateEmail(data.email) && (
+                <p className="text-xs text-red-600 mt-1">
+                    Please enter a valid email address (e.g., user@example.com)
+                </p>
+            )}
+            <p className="text-xs text-gray-500 mt-1">
+                Enter a valid email address that you have access to.
+            </p>
             </div>
 
             {user.email_verified_at === null && (
@@ -125,7 +157,7 @@
             )}
 
             <div className="flex items-center justify-center gap-4 mt-4">
-            <PrimaryButton disabled={processing}>Save</PrimaryButton>
+            <PrimaryButton disabled={processing || (data.email && !validateEmail(data.email))}>Save</PrimaryButton>
             </div>
         </form>
         </section>

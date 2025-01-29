@@ -2,11 +2,10 @@ import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
-import { Transition } from '@headlessui/react';
-import { useForm } from '@inertiajs/react';
-import { useRef, useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useForm } from '@inertiajs/react';
+import { useEffect, useRef, useState } from 'react';
 import Swal from 'sweetalert2';
 
 export default function UpdatePasswordForm({ className = '' }) {
@@ -15,6 +14,14 @@ export default function UpdatePasswordForm({ className = '' }) {
     const [showCurrentPassword, setShowCurrentPassword] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [showPasswordConfirmation, setShowPasswordConfirmation] = useState(false);
+
+    const [passwordRequirements, setPasswordRequirements] = useState({
+        uppercase: false,
+        lowercase: false,
+        number: false,
+        special: false,
+        length: false
+    });
 
     const {
         data,
@@ -30,8 +37,76 @@ export default function UpdatePasswordForm({ className = '' }) {
         password_confirmation: '',
     });
 
+    const validatePassword = (password) => {
+        if (password.includes(' ')) {
+            return {
+                isValid: false,
+                errors: {
+                    space: 'Password cannot contain spaces'
+                }
+            };
+        }
+
+        const hasUpperCase = /[A-Z]/.test(password);
+        const hasLowerCase = /[a-z]/.test(password);
+        const hasNumbers = /\d/.test(password);
+        const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+        const isLongEnough = password.length >= 8;
+
+        setPasswordRequirements({
+            uppercase: hasUpperCase,
+            lowercase: hasLowerCase,
+            number: hasNumbers,
+            special: hasSpecialChar,
+            length: isLongEnough
+        });
+
+        return {
+            isValid: hasUpperCase && hasLowerCase && hasNumbers && hasSpecialChar && isLongEnough,
+            errors: {
+                uppercase: !hasUpperCase ? 'Missing uppercase letter' : '',
+                lowercase: !hasLowerCase ? 'Missing lowercase letter' : '',
+                number: !hasNumbers ? 'Missing number' : '',
+                special: !hasSpecialChar ? 'Missing special character' : '',
+                length: !isLongEnough ? 'Password must be at least 8 characters' : ''
+            }
+        };
+    };
+
+    useEffect(() => {
+        validatePassword(data.password);
+    }, [data.password]);
+
     const updatePassword = (e) => {
         e.preventDefault();
+
+        // Validate password
+        const passwordValidation = validatePassword(data.password);
+        if (!passwordValidation.isValid) {
+            const errorMessages = Object.values(passwordValidation.errors)
+                .filter(error => error !== '')
+                .join('\n');
+            
+            Swal.fire({
+                title: 'Invalid Password',
+                html: errorMessages.replace(/\n/g, '<br>'),
+                icon: 'error',
+                confirmButtonColor: '#024635'
+            });
+            return;
+        }
+
+        // Validate password confirmation
+        if (data.password !== data.password_confirmation) {
+            Swal.fire({
+                title: 'Password Mismatch',
+                text: 'Password and confirmation do not match',
+                icon: 'error',
+                confirmButtonColor: '#024635'
+            });
+            return;
+        }
+
         put(route('password.update'), {
             preserveScroll: true,
             onSuccess: () => {
@@ -123,6 +198,26 @@ export default function UpdatePasswordForm({ className = '' }) {
                         />
                     </div>
                     <InputError message={errors.password} className="mt-2" />
+                    <div className="text-xs text-gray-700 mt-2 bg-white p-3 rounded-lg shadow-sm">
+                        Password requirements:
+                        <ul className="mt-1 space-y-1">
+                            <li className={`flex items-center ${passwordRequirements.length ? 'text-green-600' : 'text-red-600'}`}>
+                                {passwordRequirements.length ? '✓' : '✗'} At least 8 characters
+                            </li>
+                            <li className={`flex items-center ${passwordRequirements.uppercase ? 'text-green-600' : 'text-red-600'}`}>
+                                {passwordRequirements.uppercase ? '✓' : '✗'} At least one uppercase letter
+                            </li>
+                            <li className={`flex items-center ${passwordRequirements.lowercase ? 'text-green-600' : 'text-red-600'}`}>
+                                {passwordRequirements.lowercase ? '✓' : '✗'} At least one lowercase letter
+                            </li>
+                            <li className={`flex items-center ${passwordRequirements.number ? 'text-green-600' : 'text-red-600'}`}>
+                                {passwordRequirements.number ? '✓' : '✗'} At least one number
+                            </li>
+                            <li className={`flex items-center ${passwordRequirements.special ? 'text-green-600' : 'text-red-600'}`}>
+                                {passwordRequirements.special ? '✓' : '✗'} At least one special character (!@#$%^&*(),.?":{}|&lt;&gt;)
+                            </li>
+                        </ul>
+                    </div>
                 </div>
 
                 <div className="flex flex-col">
@@ -147,7 +242,6 @@ export default function UpdatePasswordForm({ className = '' }) {
 
                 <div className="flex items-center justify-center gap-4 mt-4">
                     <PrimaryButton disabled={processing}>Save</PrimaryButton>
-
                 </div>
             </form>
         </section>
