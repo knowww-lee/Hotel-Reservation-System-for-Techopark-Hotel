@@ -15,7 +15,7 @@ const AdminDashboard = ({children}) => {
     return (
         <div className="flex flex-col lg:flex-row h-screen">
             <Sidebar />
-            <main className="flex-1 overflow-y-auto p-6 bg-[#D9D9D9] lg:px-20">
+            <main className="flex-1 overflow-y-auto p-6 bg-[#D9D9D9] lg:px-20 pb-20">
                 <DashboardHeader />
                 {children}
             </main>    

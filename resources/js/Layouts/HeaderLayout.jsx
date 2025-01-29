@@ -55,7 +55,7 @@ const HeaderLayout = ({ children, activeLink }) => {
                 <img src="/logo-and-icons/logo2.png" alt="Logo" className="h-11" />
                 
 
-                <div className={`absolute top-full left-0 w-full bg-black bg-opacity-90 transition-all duration-300 ease-in-out ${isMenuOpen ? 'max-h-screen opacity-90' : 'max-h-0 opacity-0 overflow-hidden'} lg:relative lg:flex lg:max-h-full lg:opacity-100 lg:bg-transparent lg:w-auto lg:space-x-8 lg:items-center`}>
+                <div className={`absolute top-full left-0 w-full bg-black bg-opacity-90 transition-all duration-300 ease-in-out ${isMenuOpen ? 'max-h-screen opacity-90' : 'max-h-0 opacity-0 overflow-hidden'} lg:relative lg:flex lg:max-h-full lg:opacity-100 lg:bg-transparent lg:w-auto lg:space-x-8 lg:items-center lg:overflow-visible`}>
                 <div className="flex flex-col lg:flex-row items-center space-y-4 lg:space-y-0 lg:space-x-8 p-4 lg:p-0">
                     <NavLink
                         href="/"
@@ -101,7 +101,7 @@ const HeaderLayout = ({ children, activeLink }) => {
                         </button>
                     
                             {isDropdownOpen && (
-                                <div className="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-black bg-opacity-90 ring-1 ring-[#FFD700] ring-opacity-10">
+                                <div className="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-black bg-opacity-90 ring-1 ring-[#FFD700] ring-opacity-10 z-50 lg:block">
                                     <div className="py-1">
                                         {auth.user ? (
                                             <>

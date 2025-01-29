@@ -167,15 +167,15 @@ export default function Guest({ bookings = [], todayCheckoutCount = 0, viewingCh
             <Head title="Guest" />
 
             <AdminDashboard>
-                <h3 className="mb-4 text-[#024635]">
+                <h3 className="mb-4 text-[#024635] text-lg md:text-xl lg:text-2xl">
                     {viewingCheckouts ? "Today's Check-outs" : viewingCancelled ? "Cancelled Bookings" : "Guests"}
                 </h3>         
-                <div className="p-4 bg-white">
-                    <div className="flex items-center justify-between mb-4">
-                        <div>
+                <div className="p-2 md:p-4 bg-white rounded-lg shadow">
+                    <div className="flex flex-col md:flex-row items-center justify-between mb-4">
+                        <div className="flex flex-row flex-wrap items-center">
                             <button 
                                 onClick={() => handleViewChange(false, false)}
-                                className={`px-4 py-2 border rounded-3xl mr-4 ${
+                                className={`px-2 md:px-4 py-1 md:py-2 border rounded-3xl mr-2 md:mr-4 mb-2 md:mb-0 ${
                                     !viewingCheckouts && !viewingCancelled 
                                         ? 'bg-[#C2F8EB] border-[#024635] text-[#024635]' 
                                         : 'bg-white border-[#989FAD] text-[#5D6679]'
@@ -185,7 +185,7 @@ export default function Guest({ bookings = [], todayCheckoutCount = 0, viewingCh
                             </button>
                             <button 
                                 onClick={() => handleViewChange(true, false)}
-                                className={`px-4 py-2 border rounded-3xl ${
+                                className={`px-2 md:px-4 py-1 md:py-2 border rounded-3xl mr-2 md:mr-4 mb-2 md:mb-0 ${
                                     viewingCheckouts 
                                         ? 'bg-[#C2F8EB] border-[#024635] text-[#024635]' 
                                         : 'bg-white border-[#989FAD] text-[#5D6679]'
@@ -196,7 +196,7 @@ export default function Guest({ bookings = [], todayCheckoutCount = 0, viewingCh
 
                             <button 
                                 onClick={() => handleViewChange(false, true)}
-                                className={`ml-4 px-4 py-2 border rounded-3xl ${viewingCancelled ? 'bg-[#C2F8EB] border-[#024635] text-[#024635]' : 'bg-white border-[#989FAD] text-[#5D6679]'}`}
+                                className={`px-2 md:px-4 py-1 md:py-2 border rounded-3xl ${viewingCancelled ? 'bg-[#C2F8EB] border-[#024635] text-[#024635]' : 'bg-white border-[#989FAD] text-[#5D6679]'}`}
                             >
                                 Cancelled Bookings
                             </button>
@@ -207,48 +207,48 @@ export default function Guest({ bookings = [], todayCheckoutCount = 0, viewingCh
                             placeholder="Search by room number or guest name"
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
-                            className="px-4 py-2 border border-gray-300 rounded"
+                            className="px-2 mt-2 md:px-4 py-1 md:py-2 border border-gray-300 rounded w-1/2 md:w-auto"
                         />
                     </div>
 
                     <div className="overflow-x-auto">
-                        <table className="min-w-full">
+                        <table className="min-w-full text-xs md:text-sm">
                             <thead className="bg-[#F7F9FC]">
                                 <tr>
-                                    <th className="px-4 py-2 text-center text-[#667085]">Booking ID</th>
-                                    <th className="px-4 py-2 text-center text-[#667085]">Guest Name</th>
-                                    <th className="px-4 py-2 text-center text-[#667085]">Room Number</th>
-                                    <th className="px-4 py-2 text-center text-[#667085]">Room Type</th>
-                                    <th className="px-4 py-2 text-center text-[#667085]">Check In</th>
-                                    <th className="px-4 py-2 text-center text-[#667085]">Check Out</th>
-                                    <th className="px-4 py-2 text-center text-[#667085]">Status</th>
-                                    <th className="px-2 py-2 text-center text-[#667085]">Actions</th>
+                                    <th className="px-2 md:px-4 py-2 text-center text-[#667085]">Booking ID</th>
+                                    <th className="px-2 md:px-4 py-2 text-center text-[#667085]">Guest Name</th>
+                                    <th className="px-2 md:px-4 py-2 text-center text-[#667085]">Room Number</th>
+                                    <th className="px-2 md:px-4 py-2 text-center text-[#667085]">Room Type</th>
+                                    <th className="px-2 md:px-4 py-2 text-center text-[#667085]">Check In</th>
+                                    <th className="px-2 md:px-4 py-2 text-center text-[#667085]">Check Out</th>
+                                    <th className="px-2 md:px-4 py-2 text-center text-[#667085]">Status</th>
+                                    <th className="px-2 md:px-4 py-2 text-center text-[#667085]">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {filteredBookings.map((booking) => (
                                     <tr key={booking.id}>
-                                        <td className="px-4 py-4 text-center text-[#2B2F38] font-bold">
+                                        <td className="px-2 md:px-4 py-2 text-center text-[#2B2F38] font-bold">
                                             #{String(booking.id).padStart(4, '0')}
                                         </td>
-                                        <td className="px-4 py-2 text-center text-[#5D6679]">{booking.name || 'N/A'}</td>
-                                        <td className="px-4 py-2 text-center text-[#5D6679]">{booking.room_number || 'N/A'}</td>
-                                        <td className="px-4 py-2 text-center text-[#5D6679] capitalize">{booking.room_type || 'N/A'}</td>
-                                        <td className="px-4 py-2 text-center text-[#5D6679]">{formatDate(booking.check_in)}</td>
-                                        <td className="px-4 py-2 text-center text-[#5D6679]">{formatDate(booking.check_out)}</td>
-                                        <td className="px-4 py-2 text-center">
+                                        <td className="px-2 md:px-4 py-2 text-center text-[#5D6679]">{booking.name || 'N/A'}</td>
+                                        <td className="px-2 md:px-4 py-2 text-center text-[#5D6679]">{booking.room_number || 'N/A'}</td>
+                                        <td className="px-2 md:px-4 py-2 text-center text-[#5D6679] capitalize">{booking.room_type || 'N/A'}</td>
+                                        <td className="px-2 md:px-4 py-2 text-center text-[#5D6679]">{formatDate(booking.check_in)}</td>
+                                        <td className="px-2 md:px-4 py-2 text-center text-[#5D6679]">{formatDate(booking.check_out)}</td>
+                                        <td className="px-2 md:px-4 py-2 text-center">
                                             <span className={`px-2 py-1 rounded-3xl ${statusClasses[booking.status] || statusClasses.pending}`}>
                                                 {booking.status || 'pending'}
                                             </span>
                                         </td>
-                                        <td className="px-4 py-2 text-center"> 
+                                        <td className="px-2 md:px-4 py-2 text-center"> 
                                             <div className="relative" id={`dropdown-${booking.id}`}>
                                                 <button 
                                                     onClick={() => toggleDropdown(booking.id)}
                                                     className="text-gray-500 hover:text-gray-700 focus:outline-none"
                                                 >
                                                     <svg
-                                                        className="w-6 h-6"
+                                                        className="w-4 h-4 md:w-6 md:h-6"
                                                         fill="none"
                                                         stroke="currentColor"
                                                         viewBox="0 0 24 24"
@@ -263,23 +263,23 @@ export default function Guest({ bookings = [], todayCheckoutCount = 0, viewingCh
                                                     </svg>
                                                 </button>
                                                 {openMenuId === booking.id && (
-                                                    <div className="absolute right-0 bottom-full mb-2 w-48 bg-white rounded-md shadow-lg z-10 border border-gray-200">
+                                                    <div className="absolute right-0 bottom-full mb-2 w-32 md:w-48 bg-white rounded-md shadow-lg z-10 border border-gray-200">
                                                         <div className="py-1">
                                                             <button
                                                                 onClick={() => handleStatusUpdate(booking.id, booking.status)}
-                                                                className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                                                className="block w-full text-left px-2 md:px-4 py-1 md:py-2 text-xs md:text-sm text-gray-700 hover:bg-gray-100"
                                                             >
                                                                 {booking.status === 'confirmed' ? 'Cancel Booking' : 'Confirm Booking'}
                                                             </button>
                                                             <button
                                                                 onClick={() => handleCheckoutUpdate(booking.id, booking.check_out)}
-                                                                className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                                                className="block w-full text-left px-2 md:px-4 py-1 md:py-2 text-xs md:text-sm text-gray-700 hover:bg-gray-100"
                                                             >
                                                                 Update Check-out
                                                             </button>
                                                             <button
                                                                 onClick={() => handleDelete(booking.id)}
-                                                                className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
+                                                                className="block w-full text-left px-2 md:px-4 py-1 md:py-2 text-xs md:text-sm text-red-600 hover:bg-gray-100"
                                                             >
                                                                 Delete Booking
                                                             </button>

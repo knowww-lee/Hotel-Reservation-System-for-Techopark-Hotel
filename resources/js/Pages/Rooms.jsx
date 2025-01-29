@@ -34,33 +34,33 @@ export default function Room({ auth, rooms = [], stats = {} }) {
         <>
             <Head title="Rooms" />
             <AdminDashboard>
-                <div className="p-6">
+                <div className="p-2 md:p-6">
                     {/* Statistics Section */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-                        <div className="bg-white p-4 rounded-lg shadow">
-                            <h3 className="text-lg font-semibold text-[#024635]">Total Rooms</h3>
-                            <p className="text-2xl font-bold">{stats.total || 0}</p>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2 md:gap-4 mb-4 md:mb-6">
+                        <div className="bg-white p-2 md:p-4 rounded-lg shadow">
+                            <h3 className="text-sm md:text-lg font-semibold text-[#024635]">Total Rooms</h3>
+                            <p className="text-lg md:text-2xl font-bold">{stats.total || 0}</p>
                         </div>
-                        <div className="bg-white p-4 rounded-lg shadow">
-                            <h3 className="text-lg font-semibold text-[#024635]">Available Rooms</h3>
-                            <p className="text-2xl font-bold text-green-600">{stats.available || 0}</p>
+                        <div className="bg-white p-2 md:p-4 rounded-lg shadow">
+                            <h3 className="text-sm md:text-lg font-semibold text-[#024635]">Available Rooms</h3>
+                            <p className="text-lg md:text-2xl font-bold text-green-600">{stats.available || 0}</p>
                         </div>
-                        <div className="bg-white p-4 rounded-lg shadow">
-                            <h3 className="text-lg font-semibold text-[#024635]">Booked Rooms</h3>
-                            <p className="text-2xl font-bold text-blue-600">{stats.booked || 0}</p>
+                        <div className="bg-white p-2 md:p-4 rounded-lg shadow">
+                            <h3 className="text-sm md:text-lg font-semibold text-[#024635]">Booked Rooms</h3>
+                            <p className="text-lg md:text-2xl font-bold text-blue-600">{stats.booked || 0}</p>
                         </div>
-                        <div className="bg-white p-4 rounded-lg shadow">
-                            <h3 className="text-lg font-semibold text-[#024635]">Occupancy Rate</h3>
-                            <p className="text-2xl font-bold text-purple-600">
+                        <div className="bg-white p-2 md:p-4 rounded-lg shadow">
+                            <h3 className="text-sm md:text-lg font-semibold text-[#024635]">Occupancy Rate</h3>
+                            <p className="text-lg md:text-2xl font-bold text-purple-600">
                                 {stats.total ? Math.round((stats.booked / stats.total) * 100) : 0}%
                             </p>
                         </div>
                     </div>
 
                     {/* Room Type Statistics */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                        <div className="bg-white p-4 rounded-lg shadow">
-                            <h3 className="text-lg font-semibold text-[#024635] mb-2">Normal Rooms</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-4 mb-4 md:mb-6">
+                        <div className="bg-white p-2 md:p-4 rounded-lg shadow">
+                            <h3 className="text-sm md:text-lg font-semibold text-[#024635] mb-2">Normal Rooms</h3>
                             <div className="relative pt-1">
                                 <div className="flex mb-2 items-center justify-between">
                                     <div>
@@ -82,8 +82,8 @@ export default function Room({ auth, rooms = [], stats = {} }) {
                                 </div>
                             </div>
                         </div>
-                        <div className="bg-white p-4 rounded-lg shadow">
-                            <h3 className="text-lg font-semibold text-[#024635] mb-2">Luxury Rooms</h3>
+                        <div className="bg-white p-2 md:p-4 rounded-lg shadow">
+                            <h3 className="text-sm md:text-lg font-semibold text-[#024635] mb-2">Luxury Rooms</h3>
                             <div className="relative pt-1">
                                 <div className="flex mb-2 items-center justify-between">
                                     <div>
@@ -108,24 +108,24 @@ export default function Room({ auth, rooms = [], stats = {} }) {
                     </div>
 
                     {/* Filters */}
-                    <div className="bg-white p-4 rounded-lg shadow mb-6">
-                        <div className="flex flex-wrap gap-4 items-center justify-between">
-                            <div className="flex gap-4">
+                    <div className="bg-white p-2 md:p-4 rounded-lg shadow mb-4 md:mb-6">
+                        <div className="flex flex-wrap gap-2 md:gap-4 items-center justify-between">
+                            <div className="flex gap-2 md:gap-4">
                                 <button
                                     onClick={() => setRoomType('all')}
-                                    className={`px-4 py-2 rounded-lg ${roomType === 'all' ? 'bg-[#024635] text-white' : 'bg-gray-100'}`}
+                                    className={`px-2 md:px-4 py-1 md:py-2 rounded-lg ${roomType === 'all' ? 'bg-[#024635] text-white' : 'bg-gray-100'}`}
                                 >
                                     All Rooms
                                 </button>
                                 <button
                                     onClick={() => setRoomType('normal')}
-                                    className={`px-4 py-2 rounded-lg ${roomType === 'normal' ? 'bg-[#024635] text-white' : 'bg-gray-100'}`}
+                                    className={`px-2 md:px-4 py-1 md:py-2 rounded-lg ${roomType === 'normal' ? 'bg-[#024635] text-white' : 'bg-gray-100'}`}
                                 >
                                     Normal Rooms
                                 </button>
                                 <button
                                     onClick={() => setRoomType('luxury')}
-                                    className={`px-4 py-2 rounded-lg ${roomType === 'luxury' ? 'bg-[#024635] text-white' : 'bg-gray-100'}`}
+                                    className={`px-2 md:px-4 py-1 md:py-2 rounded-lg ${roomType === 'luxury' ? 'bg-[#024635] text-white' : 'bg-gray-100'}`}
                                 >
                                     Luxury Rooms
                                 </button>
@@ -135,7 +135,7 @@ export default function Room({ auth, rooms = [], stats = {} }) {
                                 placeholder="Search by room number or guest name"
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
-                                className="px-4 py-2 border rounded-lg w-full md:w-auto"
+                                className="px-2 md:px-4 py-1 md:py-2 border rounded-lg w-full md:w-auto"
                             />
                         </div>
                     </div>
@@ -143,36 +143,36 @@ export default function Room({ auth, rooms = [], stats = {} }) {
                     {/* Room List */}
                     <div className="bg-white rounded-lg shadow overflow-hidden">
                         <div className="overflow-x-auto">
-                            <table className="min-w-full">
+                            <table className="min-w-full text-xs md:text-sm">
                                 <thead className="bg-gray-50">
                                     <tr>
-                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Room Number</th>
-                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
-                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Current Guest</th>
-                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Check In</th>
-                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Check Out</th>
+                                        <th className="px-2 md:px-6 py-2 md:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Room Number</th>
+                                        <th className="px-2 md:px-6 py-2 md:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
+                                        <th className="px-2 md:px-6 py-2 md:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                        <th className="px-2 md:px-6 py-2 md:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Current Guest</th>
+                                        <th className="px-2 md:px-6 py-2 md:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Check In</th>
+                                        <th className="px-2 md:px-6 py-2 md:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Check Out</th>
                                     </tr>
                                 </thead>
                                 <tbody className="bg-white divide-y divide-gray-200">
                                     {paginatedRooms.map((room, index) => (
                                         <tr key={room.number}>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{room.number}</td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 capitalize">{room.type}</td>
-                                            <td className="px-6 py-4 whitespace-nowrap">
+                                            <td className="px-2 md:px-6 py-2 md:py-4 whitespace-nowrap text-sm font-medium text-gray-900">{room.number}</td>
+                                            <td className="px-2 md:px-6 py-2 md:py-4 whitespace-nowrap text-sm text-gray-500 capitalize">{room.type}</td>
+                                            <td className="px-2 md:px-6 py-2 md:py-4 whitespace-nowrap">
                                                 <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
                                                     room.status === 'Available' ? 'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800'
                                                 }`}>
                                                     {room.status}
                                                 </span>
                                             </td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                            <td className="px-2 md:px-6 py-2 md:py-4 whitespace-nowrap text-sm text-gray-500">
                                                 {room.current_booking?.guest_name || '-'}
                                             </td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                            <td className="px-2 md:px-6 py-2 md:py-4 whitespace-nowrap text-sm text-gray-500">
                                                 {room.current_booking?.check_in ? new Date(room.current_booking.check_in).toLocaleDateString() : '-'}
                                             </td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                            <td className="px-2 md:px-6 py-2 md:py-4 whitespace-nowrap text-sm text-gray-500">
                                                 {room.current_booking?.check_out ? new Date(room.current_booking.check_out).toLocaleDateString() : '-'}
                                             </td>
                                         </tr>
@@ -190,7 +190,7 @@ export default function Room({ auth, rooms = [], stats = {} }) {
                                     <button
                                         key={page}
                                         onClick={() => handlePageChange(page)}
-                                        className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium ${
+                                        className={`relative inline-flex items-center px-2 md:px-4 py-1 md:py-2 border text-xs md:text-sm font-medium ${
                                             currentPage === page
                                                 ? 'z-10 bg-[#024635] border-[#024635] text-white'
                                                 : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50'
