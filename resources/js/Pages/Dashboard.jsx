@@ -9,7 +9,7 @@ export default function Dashboard({ bookingStats, roomStats, contacts }) {
             <AdminDashboard>         
                 <section className="py-4 px-4 bg-white rounded-2xl shadow-lg">
                     <h2 className="mb-4 text-lg font-semibold text-gray-800">Overview</h2>
-                    <div className="grid grid-cols-4 gap-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
                         <div>
                             <p className="text-sm text-gray-500">Today's</p>
                             <p className="text-md font-semibold text-gray-500">
@@ -39,7 +39,7 @@ export default function Dashboard({ bookingStats, roomStats, contacts }) {
 
                 <section className="p-4 bg-white rounded-lg shadow mt-6">
                     <h2 className="mb-4 text-lg font-semibold text-gray-800">Rooms</h2>
-                    <div className="grid grid-cols-1 gap-40 mt-6 lg:grid-cols-2 xl:grid-cols-3">
+                    <div className="grid grid-cols-1 gap-6 mt-6 sm:grid-cols-2 lg:grid-cols-3">
                         <div className="p-4 bg-white rounded-lg border border-gray-400">
                             <h3 className="text-sm font-medium text-gray-500">Normal Rooms</h3>
                             <p className="mt-1 text-sm text-gray-500">{bookingStats.availableNormal}/{50} Available</p>
@@ -64,7 +64,7 @@ export default function Dashboard({ bookingStats, roomStats, contacts }) {
                     </div>
                 </section>
      
-                <section className="grid grid-cols-1 gap-40 mt-6 xl:grid-cols-2 mx-20">
+                <section className="grid grid-cols-1 gap-6 mt-6 xl:grid-cols-2 mx-4 lg:mx-20">
                     <div className="p-4 bg-white rounded-2xl shadow">
                         <h3 className="text-lg font-medium text-gray-800">Room Status</h3>
                         <div className="mt-4 space-y-4">

@@ -2,7 +2,6 @@ import HeaderLayout from '@/Layouts/HeaderLayout';
 import { Head, useForm } from '@inertiajs/react';
 import Swal from 'sweetalert2';
 import Footer from "../Layouts/Footer";
-import ServicesBody from "../Layouts/ServicesBody";
 
 export default function Room({ auth, check_in, check_out, room_type }) {
     const { data, setData, post, processing, errors } = useForm({
@@ -28,6 +27,7 @@ export default function Room({ auth, check_in, check_out, room_type }) {
         today.setHours(0, 0, 0, 0);
 
         if (field === 'check_in' && checkIn < today) {
+            console.log('Invalid check-in date');
             Swal.fire({
                 title: 'Invalid Date',
                 text: 'Check-in date cannot be in the past',
@@ -39,6 +39,7 @@ export default function Room({ auth, check_in, check_out, room_type }) {
         }
 
         if (checkOut && checkIn >= checkOut) {
+            console.log('Invalid date range');
             Swal.fire({
                 title: 'Invalid Date Range',
                 text: 'Check-out date must be after check-in date',
@@ -53,6 +54,7 @@ export default function Room({ auth, check_in, check_out, room_type }) {
         e.preventDefault();
 
         if (!data.name || !data.email || !data.phone || !data.check_in || !data.check_out) {
+            console.log('Missing required fields');
             Swal.fire({
                 title: 'Error',
                 text: 'Please fill in all required fields including dates',
@@ -114,54 +116,57 @@ export default function Room({ auth, check_in, check_out, room_type }) {
                 />
 
                 <HeaderLayout activeLink="services">
-                    <div className="absolute inset-0 flex flex-col items-center justify-center z-10 text-center">
-                        <p className="text-white text-lg md:text-xl mb-2" style={{ textShadow: '2px 2px 8px rgba(0, 0, 0, 0.5)' }}>
+                    <div className="absolute inset-0 flex flex-col items-center justify-center z-10 text-center px-4">
+                        <p className="text-white text-lg sm:text-xl mb-2" style={{ textShadow: '2px 2px 8px rgba(0, 0, 0, 0.5)' }}>
                             Unwind in style and sophistication
                         </p>
-                     
-                        <h1 className="text-white text-4xl md:text-6xl font-bold" style={{ textShadow: '2px 2px 8px rgba(0, 0, 0, 0.5)' }}>
+                    
+                        <h1 className="text-white text-3xl sm:text-4xl md:text-6xl font-bold" style={{ textShadow: '2px 2px 8px rgba(0, 0, 0, 0.5)' }}>
                             Find your perfect room,<br />your home away from home
                         </h1>
                     </div>
                 </HeaderLayout>
             </div>
 
-            <ServicesBody>
-                <div className="flex justify-center items-center py-8 bg-[#D9D9D9]">
-                    <div className="flex flex-col items-center mr-8">
-                        <div className="size-20 bg-[#024635] rounded-full flex items-center justify-center">
-                            <img src="/services-resources/calendar-icon.svg" alt="Calendar Icon" />
-                        </div>
-                        <p className="mt-2 text-center text-sm text-gray-700">Checking-in & <br /> Checking-out Date</p>
+            
+            <div className="flex flex-row flex-wrap justify-center items-center py-4 md:py-8 bg-[#D9D9D9]">
+                <div className="flex flex-col items-center mr-2 md:mr-8 mb-2 md:mb-0">
+                    <div className="w-8 h-8 md:w-20 md:h-20 bg-[#024635] rounded-full flex items-center justify-center">
+                        <img src="/services-resources/calendar-icon.svg" alt="Calendar Icon" className="w-4 md:w-8" />
                     </div>
-                    
-                    <div className="flex flex-col items-center mr-8">
-                        <div className="size-20 bg-[#024635] rounded-full flex items-center justify-center">
-                            <img src="/services-resources/calendar-icon.svg" alt="Calendar Icon" />
-                        </div>
-                        <p className="mt-2 text-center text-sm text-gray-700">Select<br /> Rooms & Rates</p>
-                    </div>
-
-                    <div className="flex flex-col items-center mr-8">
-                        <div className="size-20 bg-white border-4 border-[#F8B008] rounded-full flex items-center justify-center">
-                            <img src="/services-resources/guest-icon.svg" alt="Guest Icon" />
-                        </div>
-                        <p className="mt-2 text-center text-sm text-gray-700">Guest <br /> Information</p>
-                    </div>
-
-                    <div className="flex flex-col items-center">
-                        <div className="size-20 bg-white border-4 border-[#F8B008] rounded-full flex items-center justify-center">
-                            <img src="/services-resources/check-icon.svg" alt="Check Icon" />
-                        </div>
-                        <p className="mt-2 text-center text-sm text-gray-700">Booking <br /> Confirmation</p>
-                    </div>
+                    <p className="mt-1 md:mt-2 text-center text-xs md:text-sm text-gray-700">Checking-in & <br /> Checking-out Date</p>
                 </div>
+                
+                <div className="flex flex-col items-center mr-2 md:mr-8 mb-2 md:mb-0">
+                    <div className="bg-[#024635] rounded-full w-8 h-8 md:w-20 md:h-20 flex items-center justify-center">
+                        <img src="/services-resources/bed-icon.svg" alt="Bed Icon" className="w-4 md:w-8" style={{ filter: 'invert(70%) sepia(100%) saturate(748%) hue-rotate(1deg) brightness(90%) contrast(100%)' }} />
+                    </div>
+                    <p className="mt-1 md:mt-2 text-center text-xs md:text-sm text-gray-700">Select <br /> Rooms & Rates</p>
+                </div>
+
+                <div className="flex flex-col items-center mr-2 md:mr-8 mb-2 md:mb-0">
+                    <div className="w-8 h-8 md:w-20 md:h-20 bg-white border-2 md:border-4 border-[#F8B008] rounded-full flex items-center justify-center">
+                        <img src="/services-resources/guest-icon.svg" alt="Guest Icon" className="w-4 md:w-8" />
+                    </div>
+                    <p className="mt-1 md:mt-2 text-center text-xs md:text-sm text-gray-700">Guest <br /> Information</p>
+                </div>
+
+                <div className="flex flex-col items-center mr-2 md:mr-8 mb-2 md:mb-0">
+                    <div className="w-8 h-8 md:w-20 md:h-20 bg-white border-2 md:border-4 border-[#F8B008] rounded-full flex items-center justify-center">
+                        <img src="/services-resources/check-icon.svg" alt="Check Icon" className="w-4 md:w-8" />
+                    </div>
+                    <p className="mt-1 md:mt-2 text-center text-xs md:text-sm text-gray-700">Booking <br /> Confirmation</p>
+                </div>
+            </div>
 
                 <div className="p-6 bg-gray-100 min-h-screen">
                     <div className="container mx-auto">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                            <div className="md:col-span-1">
-                            <img
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-2 items-center">
+                            <div className="md:col-span-1 flex flex-col items-center">
+                                <h2 className="text-xl md:text-3xl font-bold mb-4 text-center">
+                                    {data.room_type === 'luxury' ? 'Luxury Room' : 'Normal Room'}
+                                </h2>
+                                <img
                                     src={data.room_type === 'luxury' 
                                         ? '/services-resources/luxury-room.jpg' 
                                         : '/services-resources/normal-room.jpg'}
@@ -172,7 +177,7 @@ export default function Room({ auth, check_in, check_out, room_type }) {
                                 />
                             </div>
 
-                            <div className="bg-[#EDC76D] p-6 shadow-md w-full md:col-span-1">
+                            <div className="bg-[#EDC76D] rounded-2xl p-6 shadow-md w-full md:col-span-1">
                                 <h2 className="text-lg font-bold mb-4">Guest Information</h2>
                                 <form onSubmit={handleSubmit} className="space-y-4">
                                     <div className="mt-4 space-y-4">
@@ -189,7 +194,7 @@ export default function Room({ auth, check_in, check_out, room_type }) {
                                                 id="check_in"
                                                 value={data.check_in}
                                                 onChange={(e) => handleDateChange('check_in', e.target.value)}
-                                                className="w-full px-3 py-2 border rounded-md bg-[#024635] text-white focus:outline-none focus:ring-2 focus:ring-green-500"
+                                                className="w-full rounded-lg px-3 py-2 border bg-[#024635] text-white focus:outline-none focus:ring-2 focus:ring-green-500"
                                                 required
                                             />
                                             </div>
@@ -203,7 +208,7 @@ export default function Room({ auth, check_in, check_out, room_type }) {
                                                 value={data.check_out}
                                                 onChange={(e) => handleDateChange('check_out', e.target.value)}
                                                 min={data.check_in}
-                                                className="w-full px-3 py-2 border rounded-md bg-[#024635] text-white focus:outline-none focus:ring-2 focus:ring-green-500"
+                                                className="w-full px-3 py-2 border rounded-lg bg-[#024635] text-white focus:outline-none focus:ring-2 focus:ring-green-500"
                                                 required
                                             />
                                             </div>
@@ -216,7 +221,7 @@ export default function Room({ auth, check_in, check_out, room_type }) {
                                             id="room_type"
                                             value={data.room_type}
                                             onChange={(e) => setData('room_type', e.target.value)}
-                                            className="w-full px-3 py-2 border rounded-md bg-[#024635] text-white focus:outline-none focus:ring-2 focus:ring-green-500"
+                                            className="w-full px-3 py-2 border rounded-lg bg-[#024635] text-white focus:outline-none focus:ring-2 focus:ring-green-500"
                                             >
                                             <option value="normal">Normal Room (₱100/night)</option>
                                             <option value="luxury">Luxury Room (₱200/night)</option>
@@ -234,7 +239,7 @@ export default function Room({ auth, check_in, check_out, room_type }) {
                                         id="name"
                                         value={data.name}
                                         onChange={(e) => setData('name', e.target.value)}
-                                        className="w-full px-3 py-2 border rounded-md bg-[#024635] text-white focus:outline-none focus:ring-2 focus:ring-green-500"
+                                        className="w-full px-3 py-2 border rounded-lg bg-[#024635] text-white focus:outline-none focus:ring-2 focus:ring-green-500"
                                         required
                                         />
                                     </div>
@@ -249,7 +254,7 @@ export default function Room({ auth, check_in, check_out, room_type }) {
                                             id="email"
                                             value={data.email}
                                             onChange={(e) => setData('email', e.target.value)}
-                                            className="w-full px-3 py-2 border rounded-md bg-[#024635] text-white focus:outline-none focus:ring-2 focus:ring-green-500"
+                                            className="w-full px-3 py-2 border rounded-lg bg-[#024635] text-white focus:outline-none focus:ring-2 focus:ring-green-500"
                                             required
                                         />
                                         </div>
@@ -264,7 +269,7 @@ export default function Room({ auth, check_in, check_out, room_type }) {
                                             maxLength="11"
                                             value={data.phone}
                                             onChange={(e) => setData('phone', e.target.value)}
-                                            className="w-full px-3 py-2 border rounded-md bg-[#024635] text-white focus:outline-none focus:ring-2 focus:ring-green-500"
+                                            className="w-full px-3 py-2 border rounded-lg bg-[#024635] text-white focus:outline-none focus:ring-2 focus:ring-green-500"
                                             required
                                         />
                                         </div>
@@ -278,7 +283,7 @@ export default function Room({ auth, check_in, check_out, room_type }) {
                                         id="special_requests"
                                         value={data.special_requests}
                                         onChange={(e) => setData('special_requests', e.target.value)}
-                                        className="w-full px-3 py-2 border rounded-md bg-[#024635] text-white focus:outline-none focus:ring-2 focus:ring-green-500"
+                                        className="w-full px-3 py-2 border rounded-lg bg-[#024635] text-white focus:outline-none focus:ring-2 focus:ring-green-500"
                                         rows="4"
                                         />
                                     </div>
@@ -287,7 +292,7 @@ export default function Room({ auth, check_in, check_out, room_type }) {
                                     <button
                                     type="submit"
                                     disabled={processing}
-                                    className="w-full bg-white text-black py-2 rounded-md hover:bg-yellow-500 hover:text-white focus:outline-none focus:ring-2 focus:ring-yellow-500 disabled:opacity-50"
+                                    className="w-full bg-white text-black py-2 rounded-full hover:bg-yellow-500 hover:text-white focus:outline-none focus:ring-2 focus:ring-yellow-500 disabled:opacity-50"
                                     >
                                     {processing ? 'Processing...' : 'CONFIRM BOOKING'}
                                     </button>
@@ -388,7 +393,6 @@ export default function Room({ auth, check_in, check_out, room_type }) {
                     </div>
                 </div>
                 <Footer />
-            </ServicesBody>
         </>
     );
 }
