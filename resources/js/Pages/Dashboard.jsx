@@ -1,6 +1,41 @@
 import { Head } from '@inertiajs/react';
 import AdminDashboard from "../Layouts/AdminDashboard";
 
+// Function to censor name
+const censorName = (name) => {
+    if (!name) return '';
+    const names = name.split(' ');
+    return names.map(part => {
+        if (part.length <= 2) return part;
+        const firstChar = part.charAt(0);
+        const lastChar = part.charAt(part.length - 1);
+        const middleStars = '*'.repeat(part.length - 2);
+        return `${firstChar}${middleStars}${lastChar}`;
+    }).join(' ');
+};
+
+// Function to censor email
+const censorEmail = (email) => {
+    if (!email) return '';
+    const [localPart, domain] = email.split('@');
+    
+    // Censor local part (username)
+    const censoredLocal = localPart.charAt(0) + 
+                         '*'.repeat(localPart.length - 2) + 
+                         localPart.charAt(localPart.length - 1);
+    
+    // Censor domain (except the TLD)
+    const domainParts = domain.split('.');
+    const domainName = domainParts[0];
+    const tld = domainParts.slice(1).join('.');
+    
+    const censoredDomain = domainName.charAt(0) + 
+                          '*'.repeat(domainName.length - 2) + 
+                          domainName.charAt(domainName.length - 1);
+    
+    return `${censoredLocal}@${censoredDomain}.${tld}`;
+};
+
 export default function Dashboard({ bookingStats, roomStats, contacts }) {
     return (
         <>
@@ -99,8 +134,8 @@ export default function Dashboard({ bookingStats, roomStats, contacts }) {
                                     <div key={index} className="border-b pb-4">
                                         <div className="flex justify-between items-start">
                                             <div>
-                                                <h3 className="font-medium">{feedback.name}</h3>
-                                                <p className="text-sm text-gray-600">{feedback.email}</p>
+                                                <h3 className="font-medium">{censorName(feedback.name)}</h3>
+                                                <p className="text-sm text-gray-600">{censorEmail(feedback.email)}</p>
                                             </div>
                                             <span className="text-xs text-gray-500">
                                                 {new Date(feedback.created_at).toLocaleDateString()}
