@@ -9,7 +9,7 @@ export default function Services() {
     const { data: contactData, setData: setContactData, post, processing, reset } = useForm({
         name: '',
         email: '',
-        subject: '',
+        subject: 'Feedback',
         message: ''
     });
 
@@ -271,18 +271,6 @@ export default function Services() {
                                     className="w-full p-2 md:p-3 mb-2 md:mb-4 border border-gray-300 bg-transparent focus:outline-none focus:border-green-400 placeholder-white text-xs md:text-sm"
                                     required
                                 />
-                                <select
-                                    id="subject"
-                                    value={contactData.subject}
-                                    onChange={e => setContactData('subject', e.target.value)}
-                                    className="w-full px-2 md:px-3 py-1 md:py-2 border rounded-md bg-[#024635] text-white focus:outline-none focus:ring-2 focus:ring-green-500 text-xs md:text-sm"
-                                    required
-                                >
-                                    <option value="">Select a subject</option>
-                                    <option value="Booking Inquiry">Booking Inquiry</option>
-                                    <option value="Room Information">Room Information</option>
-                                    <option value="Feedback">Feedback</option>
-                                </select>
                                 <textarea 
                                     rows="2" md:rows="4" 
                                     placeholder="Write Message" 
