@@ -13,6 +13,7 @@ use App\Http\Controllers\RoomsController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\EmailPreviewController;
 
 // Public routes
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -24,6 +25,8 @@ Route::get('/api/contacts', [ContactController::class, 'getFeedbacks'])->name('c
 Route::get('/room', function () {
     return Inertia::render('Room');
 })->name('room');
+
+Route::get('/email-preview', [EmailPreviewController::class, 'showBookingReceipt']);
 
 // Guest booking routes
 Route::post('/bookings', [BookingController::class, 'store'])->name('bookings.store');

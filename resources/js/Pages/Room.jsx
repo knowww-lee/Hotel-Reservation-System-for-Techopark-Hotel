@@ -120,7 +120,19 @@ export default function Room({ auth, check_in, check_out, room_type }) {
                     confirmButtonText: 'OK',
                     confirmButtonColor: '#024635'
                 }).then(() => {
-                    window.location.href = route('room');
+                    // Clear form fields
+                    setData({
+                        name: '',
+                        email: '',
+                        phone: '',
+                        special_requests: '',
+                        check_in: '',
+                        check_out: '',
+                        room_type: 'normal',
+                        adults: 2,
+                        children: 0,
+                        status: 'confirmed'
+                    });
                 });
             })
             .catch((error) => {

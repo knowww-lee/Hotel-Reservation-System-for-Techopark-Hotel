@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\BookingReceipt;
 use App\Models\Booking;
 use App\Models\Room;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Mail;
 
 class BookingController extends Controller
 {
@@ -77,6 +79,8 @@ class BookingController extends Controller
 
             \Log::info('Created booking:', ['booking' => $booking->toArray()]);
 
+            Mail::to($validated['email'])->send(new BookingReceipt($validated, $booking->room_number));
+
             return response()->json([
                 'success' => true,
                 'message' => 'Booking Successful!',
@@ -93,6 +97,8 @@ class BookingController extends Controller
                 'message' => 'Failed to create booking'
             ], 500);
         }
+
+
     }
 
     public function guestInformation(Request $request)
