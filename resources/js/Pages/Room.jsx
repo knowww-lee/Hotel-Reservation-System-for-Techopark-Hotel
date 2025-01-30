@@ -1,5 +1,6 @@
 import HeaderLayout from '@/Layouts/HeaderLayout';
 import { Head, useForm } from '@inertiajs/react';
+import { useState } from 'react';
 import Swal from 'sweetalert2';
 import Footer from "../Layouts/Footer";
 
@@ -15,6 +16,12 @@ export default function Room({ auth, check_in, check_out, room_type }) {
         adults: 2,
         children: 0,
         status: 'confirmed'
+    });
+
+    const [errorsState, setErrorsState] = useState({
+        name: '',
+        email: '',
+        phone: ''
     });
 
     const handleDateChange = (field, value) => {
@@ -64,6 +71,30 @@ export default function Room({ auth, check_in, check_out, room_type }) {
             return;
         }
 
+        // Validate email format
+        const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+        if (!emailRegex.test(data.email)) {
+            Swal.fire({
+                title: 'Invalid Email',
+                text: 'Please enter a valid email address',
+                icon: 'error',
+                confirmButtonColor: '#024635'
+            });
+            return;
+        }
+
+        // Validate phone number format
+        const phoneRegex = /^09\d{9}$/;
+        if (!phoneRegex.test(data.phone)) {
+            Swal.fire({
+                title: 'Invalid Phone Number',
+                text: 'Phone number must be 11 digits and start with 09',
+                icon: 'error',
+                confirmButtonColor: '#024635'
+            });
+            return;
+        }
+
         const bookingData = {
             name: data.name,
             email: data.email,
@@ -103,6 +134,60 @@ export default function Room({ auth, check_in, check_out, room_type }) {
                 });
             }
         });
+    };
+
+    // Function to handle input changes with validation
+    const handleInputChange = (field, value) => {
+        let processedValue = value;
+        
+        // For name field, only allow letters and spaces, and limit to 255 characters
+        if (field === 'name') {
+            processedValue = value.replace(/[^a-zA-Z\s]/g, '').slice(0, 255);
+        }
+        // Remove spaces from email
+        else if (field === 'email') {
+            processedValue = value.replace(/\s/g, '');
+        }
+        // For phone field, only allow numbers and limit to 11 digits
+        else if (field === 'phone') {
+            processedValue = value.replace(/[^\d]/g, '').slice(0, 11);
+        }
+        
+        setData(field, processedValue);
+        // Clear error when user starts typing
+        setErrorsState(prev => ({ ...prev, [field]: '' }));
+    };
+
+    // Function to validate fields on blur
+    const handleBlur = (field, e) => {
+        const value = data[field];
+        let errorMessage = '';
+
+        if (!value) {
+            errorMessage = `${field.charAt(0).toUpperCase() + field.slice(1)} is required`;
+        } else {
+            switch (field) {
+                case 'name':
+                    if (value.length < 2) {
+                        errorMessage = 'Name must be at least 2 characters long';
+                    }
+                    break;
+                case 'email':
+                    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+                    if (!emailRegex.test(value)) {
+                        errorMessage = 'Please enter a valid email address';
+                    }
+                    break;
+                case 'phone':
+                    const phoneRegex = /^09\d{9}$/;
+                    if (!phoneRegex.test(value)) {
+                        errorMessage = 'Phone number must be 11 digits and start with 09';
+                    }
+                    break;
+            }
+        }
+
+        setErrorsState(prev => ({ ...prev, [field]: errorMessage }));
     };
 
     return (
@@ -238,10 +323,16 @@ export default function Room({ auth, check_in, check_out, room_type }) {
                                         type="text"
                                         id="name"
                                         value={data.name}
-                                        onChange={(e) => setData('name', e.target.value)}
-                                        className="w-full px-3 py-2 border rounded-lg bg-[#024635] text-white focus:outline-none focus:ring-2 focus:ring-green-500"
+                                        onChange={(e) => handleInputChange('name', e.target.value)}
+                                        onBlur={(e) => handleBlur('name', e)}
+                                        className={`w-full px-3 py-2 border rounded-lg bg-[#024635] text-white focus:outline-none focus:ring-2 focus:ring-green-500 ${errorsState.name ? 'border-red-500' : ''}`}
                                         required
+                                        maxLength={255}
                                         />
+                                        <div className="mt-1">
+                                            <p className="text-xs text-black">Only letters are allowed. {data.name.length}/255 characters</p>
+                                            {errorsState.name && <p className="text-xs text-red-500">{errorsState.name}</p>}
+                                        </div>
                                     </div>
 
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -253,25 +344,34 @@ export default function Room({ auth, check_in, check_out, room_type }) {
                                             type="email"
                                             id="email"
                                             value={data.email}
-                                            onChange={(e) => setData('email', e.target.value)}
-                                            className="w-full px-3 py-2 border rounded-lg bg-[#024635] text-white focus:outline-none focus:ring-2 focus:ring-green-500"
+                                            onChange={(e) => handleInputChange('email', e.target.value)}
+                                            onBlur={(e) => handleBlur('email', e)}
+                                            className={`w-full px-3 py-2 border rounded-lg bg-[#024635] text-white focus:outline-none focus:ring-2 focus:ring-green-500 ${errorsState.email ? 'border-red-500' : ''}`}
                                             required
                                         />
+                                        <div className="mt-1">
+                                            <p className="text-xs text-black">Please enter a valid email address (e.g., user@example.com)</p>
+                                            {errorsState.email && <p className="text-xs text-red-500">{errorsState.email}</p>}
+                                        </div>
                                         </div>
                                         <div>
                                         <label className="block text-sm font-medium mb-1" htmlFor="phone">
-                                            Phone Number (09xxxxxxxxx)
+                                            Phone Number
                                         </label>
                                         <input
                                             type="tel"
                                             id="phone"
-                                            pattern="09[0-9]{9}"
-                                            maxLength="11"
                                             value={data.phone}
-                                            onChange={(e) => setData('phone', e.target.value)}
-                                            className="w-full px-3 py-2 border rounded-lg bg-[#024635] text-white focus:outline-none focus:ring-2 focus:ring-green-500"
+                                            onChange={(e) => handleInputChange('phone', e.target.value)}
+                                            onBlur={(e) => handleBlur('phone', e)}
+                                            className={`w-full px-3 py-2 border rounded-lg bg-[#024635] text-white focus:outline-none focus:ring-2 focus:ring-green-500 ${errorsState.phone ? 'border-red-500' : ''}`}
                                             required
+                                            placeholder="09xxxxxxxxx"
                                         />
+                                        <div className="mt-1">
+                                            <p className="text-xs text-black">Must be 11 digits starting with 09</p>
+                                            {errorsState.phone && <p className="text-xs text-red-500">{errorsState.phone}</p>}
+                                        </div>
                                         </div>
                                     </div>
 
