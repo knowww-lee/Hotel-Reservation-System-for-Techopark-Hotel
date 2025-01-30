@@ -287,15 +287,6 @@ export default function Login({ status, canResetPassword }) {
                         </div>
                     </form>
 
-                    <div className="text-sm text-center">
-                        <span className="text-gray-600">Haven't got an account? </span>
-                        <Link
-                            href="/register"
-                            className="text-red-600 font-bold hover:text-red-900"
-                        >
-                            Sign Up
-                        </Link>
-                    </div>
                 </div>
             </div>
         </>
