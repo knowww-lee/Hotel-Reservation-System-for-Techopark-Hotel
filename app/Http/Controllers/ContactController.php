@@ -26,5 +26,14 @@ class ContactController extends Controller
 
         return redirect()->back();
     }
+
+    public function getFeedbacks()
+    {
+        $feedbacks = Contact::where('subject', 'Feedback')
+            ->orderBy('created_at', 'desc')
+            ->get(['name', 'email', 'message', 'created_at']);
+
+        return response()->json($feedbacks);
+    }
 }
 

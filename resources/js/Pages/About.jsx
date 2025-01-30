@@ -1,9 +1,86 @@
 import HeaderLayout from '@/Layouts/HeaderLayout';
 import { Head } from '@inertiajs/react';
-import AboutBody from "../Layouts/AboutBody";
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 import Footer from "../Layouts/Footer";
 
 export default function About() {
+    const [currentFeedback, setCurrentFeedback] = useState(null);
+    const [feedbackIndex, setFeedbackIndex] = useState(0);
+    const [feedbacks, setFeedbacks] = useState([]);
+
+    // Fetch feedbacks when component mounts
+    useEffect(() => {
+        const fetchFeedbacks = async () => {
+            try {
+                const response = await axios.get('/api/contacts');
+                if (response.data && response.data.length > 0) {
+                    setFeedbacks(response.data);
+                    setCurrentFeedback(response.data[0]);
+                }
+            } catch (error) {
+                console.error('Error fetching feedbacks:', error);
+            }
+        };
+
+        fetchFeedbacks();
+    }, []);
+
+    // Set up auto-rotation in a separate useEffect
+    useEffect(() => {
+        if (feedbacks.length > 1) {
+            const interval = setInterval(() => {
+                setFeedbackIndex(prevIndex => {
+                    const newIndex = (prevIndex + 1) % feedbacks.length;
+                    setCurrentFeedback(feedbacks[newIndex]);
+                    return newIndex;
+                });
+            }, 5000);
+
+            return () => clearInterval(interval);
+        }
+    }, [feedbacks]);
+
+    // Function to censor name
+    const censorName = (name) => {
+        if (!name) return '';
+        const names = name.split(' ');
+        return names.map(part => {
+            if (part.length <= 2) return part;
+            const firstChar = part.charAt(0);
+            const lastChar = part.charAt(part.length - 1);
+            const middleStars = '*'.repeat(part.length - 2);
+            return `${firstChar}${middleStars}${lastChar}`;
+        }).join(' ');
+    };
+
+    // Function to censor email
+    const censorEmail = (email) => {
+        if (!email) return '';
+        const [localPart, domain] = email.split('@');
+        
+        // Censor local part (username)
+        const censoredLocal = localPart.charAt(0) + 
+                         '*'.repeat(localPart.length - 2) + 
+                         localPart.charAt(localPart.length - 1);
+        
+        // Censor domain (except the TLD)
+        const domainParts = domain.split('.');
+        const domainName = domainParts[0];
+        const tld = domainParts.slice(1).join('.');
+        
+        const censoredDomain = domainName.charAt(0) + 
+                          '*'.repeat(domainName.length - 2) + 
+                          domainName.charAt(domainName.length - 1);
+        
+        return `${censoredLocal}@${censoredDomain}.${tld}`;
+    };
+
+    // Function to format date
+    const formatDate = (dateString) => {
+        return new Date(dateString).toLocaleDateString();
+    };
+
     return (
         <>
             <Head title="About Us" />
@@ -84,28 +161,48 @@ export default function About() {
                 <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
                     <img src="/about-us-resources/Hotel-Room.png" alt="Hotel Room" className="shadow-lg"/>
                     <div className="text-white flex flex-col justify-center">
-                        <p className="text-[#F8B008] font-bold text-md">Customer</p>
+                        <p className="text-[#F8B008] font-bold text-md">Customer Feedback</p>
                         <h2 className="text-2xl font-semibold mt-2 uppercase">Technopark Hotel in <br /> Santa Rosa, Laguna</h2>
-                        <p className="mt-4 text-md text-gray-200 leading-relaxed">
-                            The staff at Technopark Hotel went above and beyond to make our three-day seminar truly exceptional.
-                            Their warmth, professionalism, and attention to detail created an atmosphere of comfort and ease for everyone. 
-                            We’re incredibly grateful for their unwavering support and hospitality throughout our stay.
-                        </p>
-                        <div className="flex items-center mt-4">
-                            <img src="/about-us-resources/Profile-Logo.svg" alt="Profile Logo" />
-                            <div className="ml-4">
-                                <p className="font-semibold">Rose Anne Sere</p>
-                                <div className="flex items-center">
-                                    <hr className="w-1/4 border-gray-200 mr-2" /> 
-                                    <p className="text-md text-gray-400">Customer</p>
+                        {currentFeedback ? (
+                            <>
+                                <div className="mt-4 space-y-4">
+                                    <div className="flex justify-between items-start">
+                                        <div>
+                                            <h3 className="font-medium text-white">{censorName(currentFeedback.name)}</h3>
+                                            <p className="text-sm text-gray-300">{censorEmail(currentFeedback.email)}</p>
+                                        </div>
+                                        <span className="text-xs text-gray-300">
+                                            {formatDate(currentFeedback.created_at)}
+                                        </span>
+                                    </div>
+                                    <p className="text-gray-100 mt-2">{currentFeedback.message}</p>
                                 </div>
-                            </div>
-                        </div>
+                                {feedbacks.length > 1 && (
+                                    <div className="flex justify-center mt-6 space-x-2">
+                                        {feedbacks.map((_, index) => (
+                                            <button
+                                                key={index}
+                                                className={`h-2 w-2 rounded-full transition-colors duration-200 ${
+                                                    index === feedbackIndex ? 'bg-[#F8B008]' : 'bg-gray-400 hover:bg-gray-300'
+                                                }`}
+                                                onClick={() => {
+                                                    setFeedbackIndex(index);
+                                                    setCurrentFeedback(feedbacks[index]);
+                                                }}
+                                                aria-label={`View feedback ${index + 1}`}
+                                            />
+                                        ))}
+                                    </div>
+                                )}
+                            </>
+                        ) : (
+                            <p className="mt-4 text-md text-gray-200">No customer reviews available at the moment.</p>
+                        )}
                     </div>
                 </div>
             </div>
 
-            {/* HOTEL’S ROOM & SUITES Section */}
+            {/* HOTEL'S ROOM & SUITES Section */}
             <div className="max-w-7xl mx-auto px-4 text-center mt-20">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8 mx-4 md:mx-32 mb-6">
                     <div className="bg-[#D9D9D9] shadow-lg overflow-hidden border border-[#A39999] w-full md:w-[330px] h-[415px] mx-auto">
