@@ -52,9 +52,10 @@ class BookingController extends Controller
             ->first();
             
         if (!$availableRooms) {
-            return back()->withErrors([
-                'room_type' => 'No rooms available for the selected dates and room type.'
-            ]);
+            return response()->json([
+                'success' => false,
+                'message' => 'No rooms available for the selected dates and room type.'
+            ], 400);
         }
 
         DB::beginTransaction();
@@ -76,7 +77,7 @@ class BookingController extends Controller
 
             \Log::info('Created booking:', ['booking' => $booking->toArray()]);
 
-            return redirect()->back()->with([
+            return response()->json([
                 'success' => true,
                 'message' => 'Booking Successful!',
                 'booking' => [
@@ -87,7 +88,10 @@ class BookingController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             \Log::error('Booking creation failed:', ['error' => $e->getMessage()]);
-            return back()->withErrors(['error' => 'Failed to create booking']);
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to create booking'
+            ], 500);
         }
     }
 
@@ -181,6 +185,32 @@ class BookingController extends Controller
                 // Set the room status to available
                 Room::where('room_number', $booking->room_number)
                     ->update(['room_status' => 'available', 'booking_id' => null]);
+            } elseif ($validated['status'] === 'confirmed' && $booking->status === 'cancelled') {
+                // Check if the room is already occupied
+                $room = Room::where('room_number', $booking->room_number)->first();
+                
+                if ($room->room_status === 'booked') {
+                    // Find another available room of the same type
+                    $availableRoom = Room::where('room_type', $room->room_type)
+                        ->where('room_status', 'available')
+                        ->first();
+                    
+                    if ($availableRoom) {
+                        // Update the booking with the new room number
+                        $booking->room_number = $availableRoom->room_number;
+                        $booking->save();
+
+                        // Set the new room status to booked
+                        $availableRoom->update(['room_status' => 'booked', 'booking_id' => $booking->id]);
+                    } else {
+                        // Handle the case where no available room is found
+                        // You can throw an exception or return an error response
+                        throw new \Exception('No available room found.');
+                    }
+                } else {
+                    // Set the room status to booked if the room is not occupied
+                    $room->update(['room_status' => 'booked', 'booking_id' => $booking->id]);
+                }
             }
 
             // Update the booking status
@@ -211,8 +241,7 @@ class BookingController extends Controller
         
         if ($newCheckout->lessThanOrEqualTo($today)) {
             // Update room status to available
-            DB::table('rooms')
-                ->where('room_number', $booking->room_number)
+            Room::where('room_number', $booking->room_number)
                 ->update(['room_status' => 'available', 'booking_id' => null]);
 
             // Update booking with new check-out date and mark as completed

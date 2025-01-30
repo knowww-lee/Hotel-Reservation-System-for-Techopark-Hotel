@@ -211,7 +211,7 @@ export default function Guest({ bookings = [], todayCheckoutCount = 0, viewingCh
                         />
                     </div>
 
-                    <div className="overflow-x-auto">
+                    <div className="w-full relative overflow-x-auto h-[350px]">
                         <table className="min-w-full text-xs md:text-sm">
                             <thead className="bg-[#F7F9FC]">
                                 <tr>
@@ -241,7 +241,7 @@ export default function Guest({ bookings = [], todayCheckoutCount = 0, viewingCh
                                                 {booking.status || 'pending'}
                                             </span>
                                         </td>
-                                        <td className="px-2 md:px-4 py-2 text-center"> 
+                                        <td className="px-2 md:px-4 py-2 text-center">
                                             <div className="relative" id={`dropdown-${booking.id}`}>
                                                 <button 
                                                     onClick={() => toggleDropdown(booking.id)}
@@ -263,7 +263,7 @@ export default function Guest({ bookings = [], todayCheckoutCount = 0, viewingCh
                                                     </svg>
                                                 </button>
                                                 {openMenuId === booking.id && (
-                                                    <div className="absolute right-0 bottom-full mb-2 w-32 md:w-48 bg-white rounded-md shadow-lg z-10 border border-gray-200">
+                                                    <div className="absolute right-0 top-full mb-2 w-32 md:w-48 bg-white rounded-md shadow-lg z-10 border border-gray-200 overflow-auto">
                                                         <div className="py-1">
                                                             <button
                                                                 onClick={() => handleStatusUpdate(booking.id, booking.status)}

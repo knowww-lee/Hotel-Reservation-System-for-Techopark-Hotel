@@ -30,15 +30,11 @@ export default function DashboardHeader() {
     };
 
     return (
-        <header className="flex items-center justify-between mb-6 sticky top-0 bg-[#D9D9D9] p-4 lg:p-6">
+        <header className="flex items-center justify-between mb-6 top-0 bg-[#D9D9D9] p-4 lg:p-6">
             <div>
                 <h1 className="text-2xl lg:text-3xl font-semibold text-gray-800">Welcome</h1>
                 <p className="text-sm lg:text-base">Always stay calm, serve kindly</p>
             </div>
-
-            <form className="hidden lg:block">
-                <input type="text" placeholder="Search menu..." className="px-4 lg:px-6 py-2 lg:py-3 text-sm border border-gray-300 rounded-2xl"/>
-            </form>
 
             <div className="hidden sm:ms-6 sm:flex sm:items-center">
                 <div className="relative ms-3">

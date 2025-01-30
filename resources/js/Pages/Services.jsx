@@ -73,7 +73,7 @@ export default function Services() {
                     <div className="w-8 h-8 md:w-20 md:h-20 bg-[#024635] rounded-full flex items-center justify-center">
                         <img src="/services-resources/calendar-icon.svg" alt="Calendar Icon" className="w-4 md:w-8" />
                     </div>
-                    <p className="mt-1 md:mt-2 text-center text-xs md:text-sm text-gray-700">Checking-in & <br /> Checking-out Date</p>
+                    <p className="mt-1 md:mt-2 text-center text-xs md:text-sm text-gray-700">Book<br />Now!</p>
                 </div>
                 
                 <div className="flex flex-col items-center mr-2 md:mr-8 mb-2 md:mb-0">

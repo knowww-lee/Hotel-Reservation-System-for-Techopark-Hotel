@@ -3,6 +3,7 @@ import { Head, useForm } from '@inertiajs/react';
 import { useState } from 'react';
 import Swal from 'sweetalert2';
 import Footer from "../Layouts/Footer";
+import axios from 'axios';
 
 export default function Room({ auth, check_in, check_out, room_type }) {
     const { data, setData, post, processing, errors } = useForm({
@@ -108,12 +109,10 @@ export default function Room({ auth, check_in, check_out, room_type }) {
             status: 'confirmed'
         };
 
-        post('/bookings', bookingData, {
-            preserveScroll: true,
-            onSuccess: (response) => {
+        axios.post('/bookings', bookingData)
+            .then((response) => {
                 console.log('Booking response:', response);
-                const flash = response?.props?.flash || {};
-                const roomNumber = flash?.booking?.room_number || 'Not assigned';
+                const roomNumber = response.data.booking?.room_number || 'Not assigned';
                 Swal.fire({
                     title: 'Booking Successful!',
                     html: `Thank you for choosing our hotel.<br>Your room number is: <strong>${roomNumber}</strong><br>Your booking has been confirmed.`,
@@ -121,19 +120,18 @@ export default function Room({ auth, check_in, check_out, room_type }) {
                     confirmButtonText: 'OK',
                     confirmButtonColor: '#024635'
                 }).then(() => {
-                    window.location.href = route('guest');
+                    window.location.href = route('room');
                 });
-            },
-            onError: (errors) => {
-                console.error('Booking error:', errors);
+            })
+            .catch((error) => {
+                console.error('Booking error:', error);
                 Swal.fire({
                     title: 'Error',
-                    text: Object.values(errors)[0] || 'An error occurred while processing your booking.',
+                    text: error.response?.data?.message || 'An error occurred while processing your booking.',
                     icon: 'error',
                     confirmButtonColor: '#024635'
                 });
-            }
-        });
+            });
     };
 
     // Function to handle input changes with validation
@@ -219,7 +217,7 @@ export default function Room({ auth, check_in, check_out, room_type }) {
                     <div className="w-8 h-8 md:w-20 md:h-20 bg-[#024635] rounded-full flex items-center justify-center">
                         <img src="/services-resources/calendar-icon.svg" alt="Calendar Icon" className="w-4 md:w-8" />
                     </div>
-                    <p className="mt-1 md:mt-2 text-center text-xs md:text-sm text-gray-700">Checking-in & <br /> Checking-out Date</p>
+                    <p className="mt-1 md:mt-2 text-center text-xs md:text-sm text-gray-700">Book<br />Now!</p>
                 </div>
                 
                 <div className="flex flex-col items-center mr-2 md:mr-8 mb-2 md:mb-0">
@@ -230,8 +228,8 @@ export default function Room({ auth, check_in, check_out, room_type }) {
                 </div>
 
                 <div className="flex flex-col items-center mr-2 md:mr-8 mb-2 md:mb-0">
-                    <div className="w-8 h-8 md:w-20 md:h-20 bg-white border-2 md:border-4 border-[#F8B008] rounded-full flex items-center justify-center">
-                        <img src="/services-resources/guest-icon.svg" alt="Guest Icon" className="w-4 md:w-8" />
+                    <div className="bg-[#024635] rounded-full w-8 h-8 md:w-20 md:h-20 flex items-center justify-center">
+                        <img src="/services-resources/guest-icon.svg" alt="Guest Icon" className="w-4 md:w-8" style={{ filter: 'invert(70%) sepia(100%) saturate(748%) hue-rotate(1deg) brightness(90%) contrast(100%)' }} />
                     </div>
                     <p className="mt-1 md:mt-2 text-center text-xs md:text-sm text-gray-700">Guest <br /> Information</p>
                 </div>

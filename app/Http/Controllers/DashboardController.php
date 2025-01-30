@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Booking;
 use App\Models\Contact;
+use App\Models\Room;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Carbon\Carbon;
@@ -27,6 +28,9 @@ class DashboardController extends Controller
         \Log::info('Today\'s check-ins count: ' . $todayCheckIns);
         \Log::info('Today\'s check-outs count: ' . $todayCheckOuts);
 
+        // Get total number of rooms
+        $totalRooms = Room::count();
+
         // Get total and active bookings
         $totalBookings = Booking::count();
         $activeBookings = Booking::where('status', 'confirmed')
@@ -34,15 +38,15 @@ class DashboardController extends Controller
             ->count();
 
         // Calculate available normal and luxury rooms
-        $totalNormalRooms = 50;
-        $totalLuxuryRooms = 50;
+        $totalNormalRooms = Room::where('room_type', 'normal')->count();
+        $totalLuxuryRooms = Room::where('room_type', 'luxury')->count();
 
-        $bookedNormalRooms = Booking::where('room_type', 'normal')
-            ->where('status', 'confirmed')
+        $bookedNormalRooms = Room::where('room_type', 'normal')
+            ->where('room_status', 'booked')
             ->count();
 
-        $bookedLuxuryRooms = Booking::where('room_type', 'luxury')
-            ->where('status', 'confirmed')
+        $bookedLuxuryRooms = Room::where('room_type', 'luxury')
+            ->where('room_status', 'booked')
             ->count();
 
         $availableNormalRooms = $totalNormalRooms - $bookedNormalRooms;
@@ -56,6 +60,8 @@ class DashboardController extends Controller
                 'todayCheckIns' => $todayCheckIns,
                 'todayCheckOuts' => $todayCheckOuts,
                 'total' => $totalBookings,
+                'totalNormalRooms' => $totalNormalRooms,
+                'totalLuxuryRooms' => $totalLuxuryRooms,
                 'totalActive' => $activeBookings,
                 'availableNormal' => $availableNormalRooms,
                 'availableLuxury' => $availableLuxuryRooms,
@@ -64,6 +70,21 @@ class DashboardController extends Controller
                 'occupied' => $activeBookings,
                 'available' => 100 - $activeBookings,
                 'total' => 100,
+            ],
+            
+           'stats' => [
+                'normal' => [
+                    'total' => $totalNormalRooms,
+                    'booked' => $bookedNormalRooms,
+                    'available' => $availableNormalRooms,
+                    'occupancyRate' => ($bookedNormalRooms / $totalNormalRooms) * $totalRooms,
+                ],
+                'luxury' => [
+                    'total' => $totalLuxuryRooms,
+                    'booked' => $bookedLuxuryRooms,
+                    'available' => $availableLuxuryRooms,
+                    'occupancyRate' => ($bookedLuxuryRooms / $totalLuxuryRooms) * $totalRooms,
+                ],
             ],
             'contacts' => $contacts,
         ]);
